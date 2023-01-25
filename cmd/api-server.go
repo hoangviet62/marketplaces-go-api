@@ -11,6 +11,8 @@ func StartApiServer() {
 
 	// log.Infof("Start listening on 0.0.0.0:%s", viper.GetString("PORT"))
 	server := "0.0.0.0:" + viper.GetString("PORT")
+
+	// need to be revised
 	routes.PingRoutes(router)
 
 	router.Run(server)
