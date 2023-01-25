@@ -1,13 +1,12 @@
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
-
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
+	log "github.com/sirupsen/logrus"
 )
 
 func StartMigration() {
 	log.Info("==== STARTING MIGRATIONS ====")
-	DB.AutoMigrate(&model.Category{})
+	DB.AutoMigrate(&model.User{})
 	log.Info("==== END MIGRATIONS ====")
 }
