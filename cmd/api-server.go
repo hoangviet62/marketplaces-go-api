@@ -14,6 +14,7 @@ func StartApiServer() {
 
 	// need to be revised
 	routes.PingRoutes(router)
+	routes.ProductRoutes(router)
 
 	router.Run(server)
 }

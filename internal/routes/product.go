@@ -5,6 +5,6 @@ import (
 	controllers "github.com/hoangviet62/marketplaces-go-api/internal/controllers"
 )
 
-func PingRoutes(router *gin.Engine) {
-	router.GET("/ping", controllers.Ping)
+func ProductRoutes(router *gin.Engine) {
+	router.GET("/products", controllers.GetProducts)
 }
