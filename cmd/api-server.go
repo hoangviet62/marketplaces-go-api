@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/hoangviet62/marketplaces-go-api/internal/routes"
+	routes "github.com/hoangviet62/marketplaces-go-api/internal/routes"
 	"github.com/spf13/viper"
 )
 
