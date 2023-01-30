@@ -7,6 +7,10 @@ import (
 
 func StartMigration() {
 	log.Info("==== STARTING MIGRATIONS ====")
-	DB.AutoMigrate(&model.User{})
+	DB.AutoMigrate(
+		&model.User{},
+		&model.Permission{},
+		&model.Role{},
+	)
 	log.Info("==== END MIGRATIONS ====")
 }
