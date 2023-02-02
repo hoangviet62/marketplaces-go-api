@@ -4,9 +4,10 @@ import (
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 )
 
-func (c *BaseController) GetProducts() {
+func (s *BaseService) GetProducts() any {
 	var products []model.Product
-	c.DB.Find(&products)
+	s.DB.Find(&products)
+	return products
 	// return products
 }
 

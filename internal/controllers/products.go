@@ -5,13 +5,13 @@ import (
 	"net/http"
 
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
-	service "github.com/hoangviet62/marketplaces-go-api/internal/services"
+	// service "github.com/hoangviet62/marketplaces-go-api/internal/services"
 )
 
 func (c *BaseController) GetProducts(context *gin.Context) {
 	// var products []model.Product
 	// c.DB.Find(&products)
-	var products = service.GetProducts(c)
+	// var products = service.GetProducts(c)
 	// context.JSON(http.StatusOK, gin.H{"data": products})
 }
 
@@ -42,7 +42,7 @@ func (c *BaseController) CreateProduct(context *gin.Context) {
 
 func (c *BaseController) UpdateProduct(context *gin.Context) {
 	var product model.Product
-	if err := model.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
+	if err := c.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
@@ -61,7 +61,7 @@ func (c *BaseController) UpdateProduct(context *gin.Context) {
 
 func (c *BaseController) DeleteProduct(context *gin.Context) {
 	var product model.Product
-	if err := model.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
+	if err := c.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
