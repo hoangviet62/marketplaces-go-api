@@ -5,13 +5,13 @@ import (
 	"net/http"
 
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
-	service "github.com/hoangviet62/marketplaces-go-api/internal/services"
+	// service "github.com/hoangviet62/marketplaces-go-api/internal/services"
 )
 
 func (c *BaseController) GetProducts(context *gin.Context) {
 	// var products []model.Product
 	// c.DB.Find(&products)
-	var products = service.GetProducts(c)
+	// var products = service.GetProducts(c)
 	// context.JSON(http.StatusOK, gin.H{"data": products})
 }
 

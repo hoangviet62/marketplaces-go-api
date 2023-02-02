@@ -1,7 +1,7 @@
 package internal
 
-import "gorm.io/gorm"
+import (
+	. "github.com/hoangviet62/marketplaces-go-api/internal/types"
+)
 
-type BaseController struct {
-	DB *gorm.DB
-}
+type BaseController Database
