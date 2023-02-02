@@ -1,12 +1,13 @@
 package internal
 
 import (
+	helpers "github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 )
 
-func (s *BaseService) GetProducts() any {
+func GetProducts() any {
 	var products []model.Product
-	s.DB.Find(&products)
+	helpers.GetCurrentConnect().Find(&products)
 	return products
 	// return products
 }
