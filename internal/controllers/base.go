@@ -1,7 +1,7 @@
 package internal
 
 import (
-	. "github.com/hoangviet62/marketplaces-go-api/internal/types"
+	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 )
 
-type BaseController Database
+type BaseController model.Database

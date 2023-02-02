@@ -42,7 +42,7 @@ func (c *BaseController) CreateProduct(context *gin.Context) {
 
 func (c *BaseController) UpdateProduct(context *gin.Context) {
 	var product model.Product
-	if err := model.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
+	if err := c.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
@@ -61,7 +61,7 @@ func (c *BaseController) UpdateProduct(context *gin.Context) {
 
 func (c *BaseController) DeleteProduct(context *gin.Context) {
 	var product model.Product
-	if err := model.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
+	if err := c.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}

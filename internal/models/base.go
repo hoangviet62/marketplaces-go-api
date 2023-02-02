@@ -12,3 +12,7 @@ type Model struct {
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
+
+type Database struct {
+	DB *gorm.DB
+}
