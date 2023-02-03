@@ -1,17 +1,14 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/hoangviet62/marketplaces-go-api/cmd"
-	"github.com/hoangviet62/marketplaces-go-api/helpers"
+	// "github.com/hoangviet62/marketplaces-go-api/cmd"
+	// "github.com/hoangviet62/marketplaces-go-api/helpers"
+	internal "github.com/hoangviet62/marketplaces-go-api/internal"
 )
 
 func main() {
-	r := gin.Default()
-
-	helpers.InitMySqlConnection()
-	cmd.StartMigration()
-	cmd.StartApiServer()
-
-	r.Run()
+	// helpers.InitMySqlConnection()
+	internal.CreateConsumer()
+	// cmd.StartMigration()
+	// cmd.StartApiServer()
 }
