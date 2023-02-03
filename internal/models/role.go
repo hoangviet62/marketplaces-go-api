@@ -4,6 +4,6 @@ import "gorm.io/gorm"
 
 type Role struct {
 	gorm.Model
-	Name   string
-	Status int
+	Name   string `json:"name"`
+	Status int    `json:"status"`
 }
