@@ -1,70 +1,72 @@
 package internal
 
 import (
-	helpers "github.com/hoangviet62/marketplaces-go-api/helpers"
+	"errors"
+	"github.com/gin-gonic/gin"
+	. "github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 )
 
-func GetProducts() any {
+func GetProducts() []model.Product {
 	var products []model.Product
-	helpers.GetCurrentConnect().Find(&products)
+	DB.Find(&products)
 	return products
-	// return products
 }
 
-// func (c *BaseController) GetProductById(context *gin.Context) {
-// 	var product model.Product
+func GetProductById(context *gin.Context) (model.Product, error) {
+	var product model.Product
+	if err := DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
+		return product, errors.New("Record not found")
+	}
 
-// 	if err := c.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
-// 		context.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
-// 		return
-// 	}
+	return product, nil
+}
 
-// 	context.JSON(http.StatusOK, gin.H{"data": product})
-// }
+func CreateProduct(context *gin.Context) (bool, error) {
+	// Validate input
+	var input model.CreateProductInput
+	if err := context.ShouldBindJSON(&input); err != nil {
+		return false, errors.New(err.Error())
+	}
 
-// func (c *BaseController) CreateProduct(context *gin.Context) {
-// 	// Validate input
-// 	var input model.CreateProductInput
-// 	if err := context.ShouldBindJSON(&input); err != nil {
-// 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+	product := model.Product{Name: input.Name, Description: input.Description}
+	if err := DB.Create(&product).Error; err != nil {
+		return false, errors.New(err.Error())
+	}
 
-// 	product := model.Product{Name: input.Name, Description: input.Description}
-// 	c.DB.Create(&product)
+	return true, nil
+}
 
-// 	return product
-// 	// context.JSON(http.StatusOK, gin.H{"data": product})
-// }
+func UpdateProduct(context *gin.Context) (model.Product, error) {
+	var product model.Product
+	if err := DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
+		return product, errors.New("Record not found")
+	}
 
-// func (c *BaseController) UpdateProduct(context *gin.Context) {
-// 	var product model.Product
-// 	if err := model.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
-// 		context.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
-// 		return
-// 	}
+	// Validate input
+	var input model.UpdateProductInput
+	if err := context.ShouldBindJSON(&input); err != nil {
+		return product, errors.New(err.Error())
+	}
 
-// 	// Validate input
-// 	var input model.UpdateProductInput
-// 	if err := context.ShouldBindJSON(&input); err != nil {
-// 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+	if err := DB.Updates(input).Error; err != nil {
+		return product, errors.New(err.Error())
+	}
 
-// 	c.DB.Model(&product).Updates(input)
+	DB.Model(&product).Updates(input)
+	return product, nil
+}
 
-// 	context.JSON(http.StatusOK, gin.H{"data": product})
-// }
+func DeleteProduct(context *gin.Context) (bool, error) {
+	var product model.Product
 
-// func (c *BaseController) DeleteProduct(context *gin.Context) {
-// 	var product model.Product
-// 	if err := model.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
-// 		context.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
-// 		return
-// 	}
+	if err := DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
+		return false, errors.New(err.Error())
+	}
 
-// 	c.DB.Delete(&book)
+	if err := DB.Delete(&product).Error; err != nil {
+		return false, errors.New(err.Error())
+	}
 
-// 	// context.JSON(http.StatusOK, gin.H{"data": true})
-// }
+	return true, nil
+}

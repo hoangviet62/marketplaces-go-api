@@ -7,7 +7,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetCurrentConnect() *gorm.DB {
+var DB *gorm.DB
+
+func InitMySqlConnection() {
 	user := viper.GetString("MYSQL.USERNAME")
 	password := viper.GetString("MYSQL.PASSWORD")
 	database := viper.GetString("MYSQL.DATABASE")
@@ -21,5 +23,5 @@ func GetCurrentConnect() *gorm.DB {
 		log.Error("MYSQL: ", err)
 	}
 
-	return db
+	DB = db
 }
