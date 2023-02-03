@@ -2,7 +2,7 @@ package internal
 
 import (
 	"github.com/gin-gonic/gin"
-	service "github.com/hoangviet62/marketplaces-go-api/internal/services"
+	service "github.com/hoangviet62/marketplaces-go-api/internal/services/products"
 	"net/http"
 )
 
