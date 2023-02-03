@@ -2,8 +2,9 @@ package internal
 
 import "gorm.io/gorm"
 
-type Role struct {
+type Country struct {
 	gorm.Model
 	Name   string
 	Status int
+	Code   string
 }

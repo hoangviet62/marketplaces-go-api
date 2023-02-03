@@ -4,10 +4,11 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	FirstName string
-	LastName  string
-	FullName  string
+	Username  string
+	Password  string
 	Email     string
-	RoleId    int16
-	Status    int8
+	Mobile    string
+	CountryId int
+	RoleId    int
+	Status    int
 }
