@@ -5,18 +5,24 @@ import "gorm.io/gorm"
 type Product struct {
 	gorm.Model
 	Name        string `json:"name"`
-	CategoryID  int    `json:"category_id"`
 	Description string `json:"description"`
-	Available   bool   `json:"available"`
+	Tag         string `json:"tag"`
+	Images      string `json:"images"`
+	Medias      string `json:"medias"`
 }
 
 type CreateProductInput struct {
 	Name        string `json:"name"`
-	CategoryID  int    `json:"category_id"`
+	Tag         string `json:"tag"`
 	Description string `json:"description"`
+	Images      string `json:"images"`
+	Medias      string `json:"medias"`
 }
 
 type UpdateProductInput struct {
 	Name        string `json:"name"`
+	Tag         string `json:"tag"`
 	Description string `json:"description"`
+	Images      string `json:"images"`
+	Medias      string `json:"medias"`
 }

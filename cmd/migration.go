@@ -9,9 +9,19 @@ import (
 func StartMigration() {
 	log.Info("==== STARTING MIGRATIONS ====")
 	DB.AutoMigrate(
-		&model.User{},
+		&model.Attachment{},
+		&model.Banner{},
+		&model.CartItem{},
+		&model.Cart{},
+		&model.Category{},
 		&model.Country{},
+		&model.OrderItem{},
+		&model.Order{},
+		&model.Product{},
 		&model.Role{},
+		&model.Sku{},
+		&model.Spec{},
+		&model.User{},
 	)
 	log.Info("==== END MIGRATIONS ====")
 }

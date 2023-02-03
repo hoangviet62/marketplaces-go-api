@@ -2,9 +2,8 @@ package internal
 
 import "gorm.io/gorm"
 
-type Country struct {
+type Order struct {
 	gorm.Model
-	Name   string `json:"name"`
-	Status int    `json:"status"`
 	Code   string `json:"code"`
+	Status int    `json:"status"`
 }
