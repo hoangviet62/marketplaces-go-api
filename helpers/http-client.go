@@ -1,28 +1,47 @@
 package helpers
 
 import (
-	"io"
+	"bytes"
+	"io/ioutil"
 	"net/http"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
 
-func PostRequest(url string, headers string, payload io.Reader) (result any, err error) {
-	resp, err := http.Post(url, headers, payload)
-	if err != nil {
-		log.Error("[HTTP-CLIENT] - POST METHOD - %s", err)
-		return
+func WraperRequest(method string, url string, payload *bytes.Buffer) (*http.Request, error) {
+	if payload == nil {
+		return http.NewRequest(strings.ToUpper(method), url, nil)
+	} else {
+		return http.NewRequest(strings.ToUpper(method), url, payload)
 	}
-
-	return resp, nil
 }
 
-func GetRequest(url string, headers string) (result any, err error) {
-	resp, err := http.Get(url)
+func RestClient(method string, url string, headers map[string]string, payload *bytes.Buffer) (result string, err error) {
+	client := &http.Client{}
+	req, err := WraperRequest(method, url, payload)
+
+	for key, val := range headers {
+		req.Header.Add(key, val)
+	}
+
 	if err != nil {
-		log.Error("[HTTP-CLIENT] - GET METHOD - %s", err)
+		log.Error("[HTTP-CLIENT-REQUEST-ERROR] - METHOD %s - URL %s - Error %s", method, url, err)
 		return
 	}
 
-	return resp, nil
+	resp, err := client.Do(req)
+
+	if err != nil {
+		log.Error("[HTTP-CLIENT-RESPONSE-ERROR] - METHOD %s - URL %s - Error %s", method, url, err)
+		return
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	log.Info("[HTTP-RESPONSE] %s", string(body))
+
+	return string(body), err
 }
