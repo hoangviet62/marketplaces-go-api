@@ -4,11 +4,15 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Email    string `json:"email"`
-	Mobile   string `json:"mobile"`
-	Status   int    `json:"status"`
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	Email     string `json:"email"`
+	Mobile    string `json:"mobile"`
+	Status    int    `json:"status"`
+	CountryID int
+	Country   Country
+	RoleID    int
+	Role      Role
 }
 
 type SignUpInput struct {

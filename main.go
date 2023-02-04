@@ -11,6 +11,6 @@ import (
 func main() {
 	helpers.InitMySqlConnection()
 	kong.CreateConsumer("viet")
-	// cmd.StartMigration()
+	cmd.StartMigration()
 	cmd.StartApiServer()
 }
