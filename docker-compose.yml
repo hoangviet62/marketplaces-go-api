@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  go-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: go-api
+    # command: bundle exec unicorn -p 3510 -c ./config/unicorn.rb
+    # hostname: solarpvx
+    container_name: go-api
+    mem_limit: 512M
+    memswap_limit: 512M
+    tty: true
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+    # networks:
+    #   - default
+    ports:
+      - "30000:30000"
