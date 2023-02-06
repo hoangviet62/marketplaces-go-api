@@ -8,8 +8,8 @@ type Sku struct {
 	Quantity    int     `json:"quantity"`
 	Price       float64 `json:"price"`
 	Status      int     `json:"status"`
-	ProductID   int
-	Product     Product
-	SpecID      int
-	Spec        Spec
+	ProductID   uint    `json:"product_id"`
+	CartItemID  uint    `json:"cart_item_id"`
+	OrderItemID uint    `json:"order_item_id"`
+	Spec        Spec    `json:"spec"`
 }

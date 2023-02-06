@@ -7,8 +7,8 @@ import (
 )
 
 func GetProducts(context *gin.Context) {
-	var products = service.GetProducts()
-	context.JSON(http.StatusOK, gin.H{"data": products})
+	var products, pagination = service.GetProducts(context)
+	context.JSON(http.StatusOK, gin.H{"data": products, "pagination": pagination})
 }
 
 func GetProductById(context *gin.Context) {

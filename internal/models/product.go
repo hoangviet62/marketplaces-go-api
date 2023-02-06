@@ -9,10 +9,11 @@ type Product struct {
 	Tag         string `json:"tag"`
 	Images      string `json:"images"`
 	Medias      string `json:"medias"`
-	CategoryID  int
-	Category    Category
-	SpecID      int
-	Spec        Spec
+	CategoryID  uint   `json:"category_id"`
+	CartItemID  uint   `json:"cart_item_id"`
+	OrderItemID uint   `json:"order_item_id"`
+	Spec        Spec   `json:"spec"`
+	Sku         []Sku  `json:"skus"`
 }
 
 type CreateProductInput struct {
