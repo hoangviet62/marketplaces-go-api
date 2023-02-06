@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -17,7 +18,7 @@ func WraperRequest(method string, url string, payload *bytes.Buffer) (*http.Requ
 	}
 }
 
-func RestClient(method string, url string, headers map[string]string, payload *bytes.Buffer) (result string, err error) {
+func RestClient(method string, url string, headers map[string]string, payload *bytes.Buffer) (result map[string]interface{}) {
 	client := &http.Client{}
 	req, err := WraperRequest(method, url, payload)
 
@@ -30,18 +31,21 @@ func RestClient(method string, url string, headers map[string]string, payload *b
 		return
 	}
 
-	resp, err := client.Do(req)
+	res, err := client.Do(req)
 
 	if err != nil {
 		log.Error("[HTTP-CLIENT-RESPONSE-ERROR] - METHOD %s - URL %s - Error %s", method, url, err)
 		return
 	}
 
-	defer resp.Body.Close()
+	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(res.Body)
+	var objs map[string]interface{}
+	parseErr := json.Unmarshal([]byte(body), &objs)
+	if parseErr != nil {
+		panic(err)
+	}
 
-	log.Info("[HTTP-RESPONSE] %s", string(body))
-
-	return string(body), err
+	return objs
 }
