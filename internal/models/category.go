@@ -8,3 +8,7 @@ type Category struct {
 	Products   []Product  `json:"products"`
 	Attachment Attachment `gorm:"polymorphic:Attachment;"`
 }
+
+type CreateCategoryInput struct {
+	Name string `json:"name"`
+}

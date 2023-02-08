@@ -4,15 +4,15 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Username string  `json:"username"`
-	Password string  `json:"password"`
-	Email    string  `json:"email"`
-	Mobile   string  `json:"mobile"`
-	Status   int     `json:"status"`
-	Country  Country `json:"country"`
-	Role     Role    `json:"role"`
-	Cart     Cart    `json:"cart"`
-	Orders   []Order `json:"orders"`
+	Username  string  `json:"username"`
+	Password  string  `json:"password"`
+	Email     string  `json:"email"`
+	Mobile    string  `json:"mobile"`
+	Status    int     `json:"status"`
+	CountryID uint    `json:"country_id"`
+	Country   Country `json:"country"`
+	RoleID    uint    `json:"role_id"`
+	Role      Role    `json:"role"`
 }
 
 type SignUpInput struct {
