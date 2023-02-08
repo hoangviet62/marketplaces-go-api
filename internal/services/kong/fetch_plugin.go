@@ -6,23 +6,22 @@ import (
 )
 
 type Plugin struct {
-	name string
+	Name string `json:"name"`
 }
 
-func FetchPlugin(pluginName string) (status bool) {
+type FetchPluginResponse struct {
+	Data []Plugin
+}
+
+func FetchPlugins() (plugins []Plugin) {
 	path := "/plugins"
 	url := viper.GetString("KONG.ADMIN_URL") + path
 	headers := map[string]string{
 		"Content-Type": "application/json",
 	}
-	result := helpers.RestClient("GET", url, headers, nil)
-	plugins := []Plugin result["data"]
-	// var data Plugin
-	// json.Unmarshal(result["data"], &data)
+	pluginResponse := FetchPluginResponse{}
+	helpers.RestClient("GET", url, headers, nil, &pluginResponse)
+	plugins = pluginResponse.Data
 
-	// var plugins []Plugin
-	// json.Unmarshal(res, &plugins)
-	// pp.Print(plugins)
-
-	return true
+	return plugins
 }

@@ -14,5 +14,8 @@ func StartApiServer() {
 	routes.PingRoutes(router)
 	routes.ProductRoutes(router)
 
+	// Kong migration for routes
+	KongMigration(router.Routes())
+
 	router.Run(server)
 }
