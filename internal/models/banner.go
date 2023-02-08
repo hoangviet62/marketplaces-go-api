@@ -4,7 +4,8 @@ import "gorm.io/gorm"
 
 type Banner struct {
 	gorm.Model
-	Description string `json:"description"`
-	Link_to     string `json:"link_to"`
-	Priority    int    `json:"priority"`
+	Description string     `json:"description"`
+	Link_to     string     `json:"link_to"`
+	Priority    int        `json:"priority"`
+	Attachment  Attachment `gorm:"polymorphic:Attachment;"`
 }

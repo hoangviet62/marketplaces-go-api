@@ -4,15 +4,17 @@ import "gorm.io/gorm"
 
 type Product struct {
 	gorm.Model
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Tag         string `json:"tag"`
-	Images      string `json:"images"`
-	Medias      string `json:"medias"`
-	CategoryID  int
-	Category    Category
-	SpecID      int
-	Spec        Spec
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Tag         string     `json:"tag"`
+	Images      string     `json:"images"`
+	Medias      string     `json:"medias"`
+	CategoryID  uint       `json:"category_id"`
+	CartItemID  uint       `json:"cart_item_id"`
+	OrderItemID uint       `json:"order_item_id"`
+	Spec        Spec       `json:"spec"`
+	Sku         []Sku      `json:"skus"`
+	Attachment  Attachment `gorm:"polymorphic:Attachment;"`
 }
 
 type CreateProductInput struct {

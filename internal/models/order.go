@@ -6,6 +6,6 @@ type Order struct {
 	gorm.Model
 	Code   string `json:"code"`
 	Status int    `json:"status"`
-	UserID int
-	User   User
+	UserID uint   `json:"user_id"`
+	User   User   `json:"user"`
 }

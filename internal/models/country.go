@@ -7,4 +7,5 @@ type Country struct {
 	Name   string `json:"name"`
 	Status int    `json:"status"`
 	Code   string `json:"code"`
+	UserID uint   `json:"user_id"`
 }
