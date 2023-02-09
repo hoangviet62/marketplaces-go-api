@@ -2,6 +2,7 @@ package internal
 
 import (
 	"github.com/gin-gonic/gin"
+	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 	attachmentService "github.com/hoangviet62/marketplaces-go-api/internal/services/attachments"
 	service "github.com/hoangviet62/marketplaces-go-api/internal/services/products"
 	"net/http"
@@ -22,7 +23,7 @@ func CreateProduct(context *gin.Context) {
 		return
 	}
 
-	attachmentURLs, attachmentURLsErr := service.UploadProductAttachment(context)
+	attachmentURLs, attachmentURLsErr := service.GetProductAttachments(context)
 
 	if attachmentURLsErr != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": attachmentURLsErr.Error()})
@@ -32,15 +33,48 @@ func CreateProduct(context *gin.Context) {
 	imageURLs := attachmentURLs["images"]
 	mediaURLs := attachmentURLs["medias"]
 
+	var images []model.Attachment
+	var medias []model.Attachment
+
 	for _, imageURL := range imageURLs {
-		attachmentService.CreateAttachment(context, "product_images", product.ID, imageURL)
+		attachment, err := attachmentService.CreateAttachment(context, "product_images", product.ID, imageURL)
+		if err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		images = append(images, attachment)
 	}
 
 	for _, mediaURL := range mediaURLs {
-		attachmentService.CreateAttachment(context, "product_medias", product.ID, mediaURL)
+		attachment, err := attachmentService.CreateAttachment(context, "product_medias", product.ID, mediaURL)
+
+		if err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		medias = append(medias, attachment)
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"data": product})
+	var updatedProduct model.Product
+	if images != nil {
+		updatedProduct, err = service.UploadProductAttachment(product.ID, images, "images")
+		if err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	if medias != nil {
+		updatedProduct, err = service.UploadProductAttachment(product.ID, medias, "medias")
+		if err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"data": updatedProduct})
 }
 
 func GetProductById(context *gin.Context) {
@@ -55,7 +89,7 @@ func GetProductById(context *gin.Context) {
 }
 
 func UpdateProduct(context *gin.Context) {
-	updatedProduct, err := service.UpdateProduct(context)
+	updatedProduct, err := service.UpdateProduct(context, nil)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

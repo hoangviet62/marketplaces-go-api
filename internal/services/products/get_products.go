@@ -1,6 +1,7 @@
 package internal
 
 import (
+	// "fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
@@ -30,6 +31,6 @@ func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData)
 	queriesMap := helpers.QueryBuilder(queries)
 	helpers.DB.Model(&model.Product{}).Count(&totalItems)
 	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Product{})
-	helpers.DB.Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)
+	helpers.DB.Preload("Images").Preload("Medias").Preload("Attachments").Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)
 	return products, pagination
 }

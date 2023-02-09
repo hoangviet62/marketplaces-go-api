@@ -9,13 +9,15 @@ type MultiString []string
 
 type Product struct {
 	gorm.Model
-	Name        string       `json:"name"`
-	Description string       `json:"description"`
-	Tag         string       `json:"tag"`
-	CategoryID  int          `json:"category_id"`
-	Spec        Spec         `json:"spec"`
-	Skus        []Sku        `json:"skus"`
-	Attachments []Attachment `json:"attachments" gorm:"polymorphic:Attachment;"`
+	Name        string
+	Description string
+	Tag         string
+	CategoryID  int
+	Spec        Spec
+	Skus        []Sku
+	Images      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:ProductImages"`
+	Medias      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:ProductMedias"`
+	Attachments []Attachment `gorm:"polymorphic:Attachment;"`
 }
 
 type CreateProductInput struct {
@@ -27,9 +29,11 @@ type CreateProductInput struct {
 }
 
 type UpdateProductInput struct {
-	Name        string `json:"name"`
-	Tag         string `json:"tag"`
-	Description string `json:"description"`
-	Images      string `json:"images"`
-	Medias      string `json:"medias"`
+	Name        string                `form:"name" binding:"required"`
+	Tag         string                `form:"tag"`
+	Description string                `form:"description"`
+	Images      *multipart.FileHeader `form:"images"`
+	Medias      *multipart.FileHeader `form:"medias"`
+	CategoryID  int
+	Attachments []Attachment `gorm:"polymorphic:Attachment;"`
 }
