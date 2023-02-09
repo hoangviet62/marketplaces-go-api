@@ -15,19 +15,6 @@ type CreatePluginResponse struct {
 }
 
 func CreatePlugin(resourceName string, resourceId string, pluginName string) (status bool) {
-	// plugins := FetchPlugins()
-	// isExisted := false
-
-	// for _, plugin := range plugins {
-	// 	if pluginName == plugin.Name {
-	// 		isExisted = true
-	// 		break
-	// 	}
-	// }
-
-	// if isExisted {
-	// 	return false
-	// }
 	path := resourceName + "/" + resourceId + "/plugins"
 	url := viper.GetString("KONG.ADMIN_URL") + path
 	headers := map[string]string{

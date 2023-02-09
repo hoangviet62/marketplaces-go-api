@@ -12,11 +12,17 @@ import (
 
 func KongMigration(routes []gin.RouteInfo) {
 	serviceName := viper.GetString("KONG.SERVICE_NAME")
+	plugins := viper.GetStringSlice("KONG.PLUGINS")
+	var unsecureRoutes []string
+	for _, unsecureRoute := range viper.GetStringSlice("KONG.UNSECURE_ROUTES") {
+		unsecureRoutes = append(unsecureRoutes, unsecureRoute)
+	}
+
 	status, service, error := kong.CreateService(serviceName)
 	if status {
 		log.Info("[KONG] SERVICE ", service.Name, " is created")
 	} else {
-		log.Info("[KONG] ", error)
+		log.Error("[KONG] ", error)
 	}
 
 	var createdRoutes []string
@@ -30,9 +36,9 @@ func KongMigration(routes []gin.RouteInfo) {
 	}
 
 	for routePath, methods := range groupRoutes {
-		routeName := strings.Replace(strings.Replace(routePath, "/", "", 1), "/:id", "_id", 1)
+		routeName := strings.Replace(strings.Replace(strings.Replace(routePath, "/", "", 1), "/:id", "_id", 1), "/*", "_", 1)
 		if slices.Contains(createdRoutes, routeName) {
-			log.Info("[KONG] ROUTE ", routeName, " already existed")
+			log.Error("[KONG] ROUTE ", routeName, " already existed")
 			continue
 		}
 
@@ -41,19 +47,25 @@ func KongMigration(routes []gin.RouteInfo) {
 			"paths":   []string{routePath},
 			"methods": methods,
 		}
-		status, service, error := kong.CreateRoute(service.Id, payload)
-		if status {
-			log.Info("[KONG] ROUTE ", service.Name, " is created")
-		} else {
-			log.Info("[KONG] ROUTE", error)
-		}
-	}
-}
 
-func IsServiceFailed(status bool) string {
-	if status {
-		return "success"
-	} else {
-		return "failed"
+		status, route, error := kong.CreateRoute(service.Id, payload)
+		if status {
+			log.Info("[KONG] ROUTE ", route.Name, " is created")
+			for _, pluginName := range plugins {
+				if slices.Contains(unsecureRoutes, routePath) {
+					continue
+				}
+
+				status := kong.CreatePlugin("/routes", route.Id, pluginName)
+				if status {
+					log.Info("[KONG] ASSIGNED PLUGIN ", service.Name, " to ROUTE ", route.Name)
+				} else {
+					log.Error("[KONG] FAILED TO ASSIGN PLUGIN ", service.Name, " to ROUTE ", route.Name)
+				}
+
+			}
+		} else {
+			log.Error("[KONG] ROUTE ", error)
+		}
 	}
 }
