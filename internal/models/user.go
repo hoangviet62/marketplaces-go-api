@@ -4,33 +4,33 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Username string  `json:"username"`
-	Password string  `json:"password"`
-	Email    string  `json:"email"`
-	Mobile   string  `json:"mobile"`
-	Status   int     `json:"status"`
-	Country  Country `json:"country"`
-	Role     Role    `json:"role"`
-	Cart     Cart    `json:"cart"`
-	Orders   []Order `json:"orders"`
+	Username  string
+	Password  string
+	Email     string
+	Mobile    string
+	Status    int
+	CountryID uint
+	Country   Country
+	RoleID    uint
+	Role      Role
 }
 
 type SignUpInput struct {
-	Username        string `json:"name" binding:"required"`
-	Email           string `json:"email" binding:"required"`
-	Password        string `json:"password" binding:"required,min=8"`
-	PasswordConfirm string `json:"passwordConfirm" binding:"required"`
-	Mobile          string `json:"photo" binding:"required"`
+	Username        string `binding:"required"`
+	Email           string `binding:"required"`
+	Password        string `binding:"required,min=8"`
+	PasswordConfirm string `binding:"required"`
+	Mobile          string `binding:"required"`
 }
 
 type SignInInput struct {
-	Email    string `json:"email"  binding:"required"`
-	Password string `json:"password"  binding:"required"`
+	Email    string `binding:"required"`
+	Password string `binding:"required"`
 }
 
 type UserResponse struct {
 	gorm.Model
-	Username string `json:"name,omitempty"`
-	Email    string `json:"email,omitempty"`
-	Role     string `json:"role,omitempty"`
+	Username string `omitempty"`
+	Email    string `omitempty"`
+	Role     string `omitempty"`
 }

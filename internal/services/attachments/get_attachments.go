@@ -1,7 +1,6 @@
 package internal
 
 import (
-	// "fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
@@ -9,7 +8,7 @@ import (
 	"strconv"
 )
 
-func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData) {
+func GetAttachments(context *gin.Context) ([]model.Attachment, helpers.PaginationData) {
 	perPage := viper.GetInt("PAGINATION.PER_PAGE")
 	page := viper.GetInt("PAGINATION.PAGE")
 	sort := viper.GetString("PAGINATION.SORT")
@@ -26,11 +25,11 @@ func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData)
 		sort = sortStr
 	}
 
-	var products []model.Product
+	var attachments []model.Attachment
 	var totalItems int64
 	queriesMap := helpers.QueryBuilder(queries)
-	helpers.DB.Model(&model.Product{}).Count(&totalItems)
-	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Product{})
-	helpers.DB.Preload("Images").Preload("Medias").Preload("Attachments").Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)
-	return products, pagination
+	helpers.DB.Model(&model.Attachment{}).Count(&totalItems)
+	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Attachment{})
+	helpers.DB.Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&attachments)
+	return attachments, pagination
 }

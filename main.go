@@ -1,7 +1,5 @@
 package main
 
-// "github.com/hoangviet62/marketplaces-go-api/cmd"
-
 import (
 	"github.com/hoangviet62/marketplaces-go-api/cmd"
 	"github.com/hoangviet62/marketplaces-go-api/helpers"

@@ -2,22 +2,24 @@ package internal
 
 import (
 	"errors"
+	// "fmt"
 	"github.com/gin-gonic/gin"
 	. "github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
+	"strconv"
 )
 
-func CreateProduct(context *gin.Context) (bool, error) {
+func CreateProduct(context *gin.Context) (model.Product, error) {
 	// Validate input
-	var input model.CreateProductInput
-	if err := context.ShouldBindJSON(&input); err != nil {
-		return false, errors.New(err.Error())
-	}
+	// var input model.CreateProductInput
+	name := context.PostForm("name")
+	description := context.PostForm("description")
+	categoryId, _ := strconv.Atoi(context.PostForm("category_id"))
+	product := model.Product{Name: name, Description: description, CategoryID: categoryId}
 
-	product := model.Product{Name: input.Name, Description: input.Description}
 	if err := DB.Create(&product).Error; err != nil {
-		return false, errors.New(err.Error())
+		return product, errors.New(err.Error())
 	}
 
-	return true, nil
+	return product, nil
 }

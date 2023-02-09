@@ -4,10 +4,11 @@ import "gorm.io/gorm"
 
 type OrderItem struct {
 	gorm.Model
-	Quantity int     `json:"quantity"`
-	Price    float64 `json:"price"`
-	OrderID  uint    `json:"order_id"`
-	Order    Order   `json:"order"`
-	Product  Product `json:"product"`
-	Sku      Sku     `json:"sku"`
+	Quantity  int
+	Price     float64
+	OrderID   uint
+	Order     Order
+	ProductID uint
+	Product   Product
+	Sku       Sku
 }
