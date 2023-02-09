@@ -7,18 +7,22 @@ import (
 	kong "github.com/hoangviet62/marketplaces-go-api/internal/services/kong"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"golang.org/x/exp/slices"
 )
 
 func KongMigration(routes []gin.RouteInfo) {
-	plugins := viper.GetStringSlice("KONG.PLUGINS")
-	for _, plugin := range plugins {
-		pluginStatus := kong.CreatePlugin(plugin)
-		log.Info("[KONG] PLUGIN MIGRATION ", plugin, " ", IsServiceFailed(pluginStatus))
+	serviceName := viper.GetString("KONG.SERVICE_NAME")
+	status, service, error := kong.CreateService(serviceName)
+	if status {
+		log.Info("[KONG] SERVICE ", service.Name, " is created")
+	} else {
+		log.Info("[KONG] ", error)
 	}
 
-	serviceName := viper.GetString("KONG.SERVICE_NAME")
-	serviceStatus := kong.CreateService(serviceName)
-	log.Info("[KONG] SERVICE MIGRATION ", serviceName, " ", IsServiceFailed(serviceStatus))
+	var createdRoutes []string
+	for _, route := range kong.FetchRoutes(service.Id) {
+		createdRoutes = append(createdRoutes, route.Name)
+	}
 
 	groupRoutes := make(map[string][]string)
 	for _, route := range routes {
@@ -26,13 +30,23 @@ func KongMigration(routes []gin.RouteInfo) {
 	}
 
 	for routePath, methods := range groupRoutes {
+		routeName := strings.Replace(strings.Replace(routePath, "/", "", 1), "/:id", "_id", 1)
+		if slices.Contains(createdRoutes, routeName) {
+			log.Info("[KONG] ROUTE ", routeName, " already existed")
+			continue
+		}
+
 		payload := map[string]interface{}{
-			"name":    strings.Replace(strings.Replace(routePath, "/", "", 1), "/:id", "_id", 1),
+			"name":    routeName,
 			"paths":   []string{routePath},
 			"methods": methods,
 		}
-		routeStatus := kong.CreateRoute(serviceName, payload)
-		log.Info("[KONG] ROUTE MIGRATION ", routePath, " with ", methods, " ", IsServiceFailed(routeStatus))
+		status, service, error := kong.CreateRoute(service.Id, payload)
+		if status {
+			log.Info("[KONG] ROUTE ", service.Name, " is created")
+		} else {
+			log.Info("[KONG] ROUTE", error)
+		}
 	}
 }
 

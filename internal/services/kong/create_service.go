@@ -3,6 +3,7 @@ package internal
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"strconv"
 
 	helpers "github.com/hoangviet62/marketplaces-go-api/helpers"
@@ -16,19 +17,22 @@ type CreateServiceResponse struct {
 	ErrorMessage string `json:"Message"`
 }
 
-func CreateService(serviceName string) (status bool) {
+func CreateService(serviceName string) (bool, CreateServiceResponse, error) {
+	var serviceResponse CreateServiceResponse
 	services := FetchServices()
 	isExisted := false
 
 	for _, service := range services {
 		if serviceName == service.Name {
 			isExisted = true
+			serviceResponse = CreateServiceResponse{Id: service.Id, Name: service.Name}
 			break
 		}
 	}
 
 	if isExisted {
-		return false
+		errMsg := "SERVICE " + serviceName + " already existed"
+		return false, serviceResponse, errors.New(errMsg)
 	}
 
 	path := "/services"
@@ -51,12 +55,10 @@ func CreateService(serviceName string) (status bool) {
 		"client_certificate": nil,
 	}
 	jsonValue, _ := json.Marshal(payload)
-	serviceResponse := CreateServiceResponse{}
 	helpers.RestClient("POST", url, headers, bytes.NewBuffer(jsonValue), &serviceResponse)
-
-	if serviceResponse.ErrorMessage == "" {
-		return true
+	if serviceResponse.Id != "" {
+		return true, serviceResponse, errors.New("")
 	} else {
-		return false
+		return false, serviceResponse, errors.New(serviceResponse.ErrorMessage)
 	}
 }

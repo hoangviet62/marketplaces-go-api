@@ -14,22 +14,21 @@ type CreatePluginResponse struct {
 	Enabled bool   `json:"Enabled"`
 }
 
-func CreatePlugin(pluginName string) (status bool) {
-	plugins := FetchPlugins()
-	isExisted := false
+func CreatePlugin(resourceName string, resourceId string, pluginName string) (status bool) {
+	// plugins := FetchPlugins()
+	// isExisted := false
 
-	for _, plugin := range plugins {
-		if pluginName == plugin.Name {
-			isExisted = true
-			break
-		}
-	}
+	// for _, plugin := range plugins {
+	// 	if pluginName == plugin.Name {
+	// 		isExisted = true
+	// 		break
+	// 	}
+	// }
 
-	if isExisted {
-		return false
-	}
-
-	path := "/plugins"
+	// if isExisted {
+	// 	return false
+	// }
+	path := resourceName + "/" + resourceId + "/plugins"
 	url := viper.GetString("KONG.ADMIN_URL") + path
 	headers := map[string]string{
 		"Content-Type": "application/json",

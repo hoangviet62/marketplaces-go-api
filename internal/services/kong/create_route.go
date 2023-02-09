@@ -3,9 +3,9 @@ package internal
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 
 	helpers "github.com/hoangviet62/marketplaces-go-api/helpers"
-	"github.com/k0kubun/pp"
 	"github.com/spf13/viper"
 )
 
@@ -16,7 +16,7 @@ type CreateRouteResponse struct {
 	ErrorMessage string `json:"Message"`
 }
 
-func CreateRoute(serviceId string, payload map[string]interface{}) (status bool) {
+func CreateRoute(serviceId string, payload map[string]interface{}) (bool, CreateRouteResponse, error) {
 	path := "/services/" + serviceId + "/routes"
 	url := viper.GetString("KONG.ADMIN_URL") + path
 	headers := map[string]string{
@@ -25,10 +25,10 @@ func CreateRoute(serviceId string, payload map[string]interface{}) (status bool)
 	jsonValue, _ := json.Marshal(payload)
 	routeResponse := CreateRouteResponse{}
 	helpers.RestClient("POST", url, headers, bytes.NewBuffer(jsonValue), &routeResponse)
-	pp.Print(routeResponse)
+
 	if routeResponse.Id != "" {
-		return true
+		return true, routeResponse, errors.New("")
 	} else {
-		return false
+		return false, routeResponse, errors.New(routeResponse.ErrorMessage)
 	}
 }

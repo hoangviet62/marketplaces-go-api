@@ -6,7 +6,8 @@ import (
 )
 
 type Service struct {
-	Name string `json:"name"`
+	Id   string `json:"Id"`
+	Name string `json:"Name"`
 }
 
 type FetchServiceResponse struct {
@@ -21,7 +22,5 @@ func FetchServices() (services []Service) {
 	}
 	serviceResponse := FetchServiceResponse{}
 	helpers.RestClient("GET", url, headers, nil, &serviceResponse)
-	services = serviceResponse.Data
-
-	return services
+	return serviceResponse.Data
 }

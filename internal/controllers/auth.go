@@ -4,17 +4,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	service "github.com/hoangviet62/marketplaces-go-api/internal/services/users"
 )
 
-// [...] SignUp User
-func CreateUser(context *gin.Context) {
-	created, err := service.CreateUser(context)
+func SignIn(context *gin.Context) {
 
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	context.JSON(http.StatusCreated, gin.H{"data": ""})
+}
 
-	context.JSON(http.StatusCreated, gin.H{"data": created})
+func SignOut(context *gin.Context) {
+
+	context.JSON(http.StatusCreated, gin.H{"data": ""})
 }

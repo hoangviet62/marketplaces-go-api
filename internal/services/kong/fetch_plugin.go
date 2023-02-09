@@ -6,7 +6,8 @@ import (
 )
 
 type Plugin struct {
-	Name string `json:"name"`
+	Id   string `json:"Id"`
+	Name string `json:"Name"`
 }
 
 type FetchPluginResponse struct {
@@ -21,7 +22,5 @@ func FetchPlugins() (plugins []Plugin) {
 	}
 	pluginResponse := FetchPluginResponse{}
 	helpers.RestClient("GET", url, headers, nil, &pluginResponse)
-	plugins = pluginResponse.Data
-
-	return plugins
+	return pluginResponse.Data
 }
