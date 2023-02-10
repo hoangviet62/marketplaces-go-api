@@ -8,12 +8,16 @@ import (
 )
 
 func CreateUser(context *gin.Context) {
-	created, err := service.CreateUser(context)
+	created, user, err := service.CreateUser(context)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"data": created})
+	data := map[string]interface{}{
+		"status": created,
+		"user":   user,
+	}
+	context.JSON(http.StatusCreated, gin.H{"data": data})
 }

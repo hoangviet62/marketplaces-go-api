@@ -1,14 +1,14 @@
 package cmd
 
 import (
-	. "github.com/hoangviet62/marketplaces-go-api/helpers"
+	helpers "github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 	log "github.com/sirupsen/logrus"
 )
 
 func StartMigration() {
 	log.Info("==== STARTING MIGRATIONS ====")
-	DB.AutoMigrate(
+	helpers.DB.AutoMigrate(
 		&model.Attachment{},
 		&model.Banner{},
 		&model.CartItem{},
@@ -23,5 +23,9 @@ func StartMigration() {
 		&model.Spec{},
 		&model.User{},
 	)
+
+	// Seed DB
+	var roles = []model.Role{{RoleType: "admin"}, {RoleType: "user"}, {RoleType: "seller"}}
+	helpers.DB.FirstOrCreate(&roles)
 	log.Info("==== END MIGRATIONS ====")
 }

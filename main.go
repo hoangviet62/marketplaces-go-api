@@ -7,6 +7,6 @@ import (
 
 func main() {
 	helpers.InitMySqlConnection()
-	// cmd.StartMigration()
+	cmd.StartMigration()
 	cmd.StartApiServer()
 }

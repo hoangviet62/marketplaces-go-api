@@ -43,7 +43,7 @@ func KongMigration(routes []gin.RouteInfo) {
 		}
 
 		payload := map[string]interface{}{
-			"name":    routeName,
+			"name":    strings.Replace(routeName, "/", "-", 1),
 			"paths":   []string{routePath},
 			"methods": methods,
 		}
@@ -62,7 +62,6 @@ func KongMigration(routes []gin.RouteInfo) {
 				} else {
 					log.Error("[KONG] FAILED TO ASSIGN PLUGIN ", service.Name, " to ROUTE ", route.Name)
 				}
-
 			}
 		} else {
 			log.Error("[KONG] ROUTE ", error)

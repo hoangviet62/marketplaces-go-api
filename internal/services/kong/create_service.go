@@ -18,23 +18,7 @@ type CreateServiceResponse struct {
 }
 
 func CreateService(serviceName string) (bool, CreateServiceResponse, error) {
-	var serviceResponse CreateServiceResponse
-	// services := FetchServices()
-	// isExisted := false
-
-	// for _, service := range services {
-	// 	if serviceName == service.Name {
-	// 		isExisted = true
-	// 		serviceResponse = CreateServiceResponse{Id: service.Id, Name: service.Name}
-	// 		break
-	// 	}
-	// }
-
-	// if isExisted {
-	// 	errMsg := "SERVICE " + serviceName + " already existed"
-	// 	return false, serviceResponse, errors.New(errMsg)
-	// }
-
+	serviceResponse := CreateServiceResponse{}
 	path := "/services/" + serviceName
 	url := viper.GetString("KONG.ADMIN_URL") + path
 	port, _ := strconv.ParseInt(viper.GetString("PORT"), 10, 0)

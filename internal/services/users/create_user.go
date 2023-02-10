@@ -2,42 +2,59 @@ package internal
 
 import (
 	"errors"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
-	"strings"
+	kong "github.com/hoangviet62/marketplaces-go-api/internal/services/kong"
+	"gorm.io/gorm/clause"
 )
 
-func CreateUser(context *gin.Context) (bool, error) {
+func CreateUser(context *gin.Context) (bool, model.User, error) {
 	// Validate input
 	var input model.SignUpInput
+	user := model.User{}
 	if err := context.ShouldBindJSON(&input); err != nil {
-		return false, errors.New(err.Error())
+		return false, user, errors.New(err.Error())
 	}
 
 	if input.Password != input.PasswordConfirm {
-		return false, errors.New("Passwords do not match")
+		return false, user, errors.New("password does not match")
 	}
 
 	hashedPassword, err := helpers.HashPassword(input.Password)
 
 	if err != nil {
-		return false, errors.New(err.Error())
+		return false, user, errors.New(err.Error())
 	}
+	var role model.Role
+	helpers.DB.Where("role_type = ?", "user").First(&role)
 
-	user := model.User{
-		Username: input.Username,
+	user = model.User{
+		Username: strings.ToLower(input.Username),
 		Email:    strings.ToLower(input.Email),
 		Password: hashedPassword,
+		Mobile:   input.Mobile,
+		Status:   "inactive",
+		RoleId:   role.ID,
 	}
 
-	result := helpers.DB.Create(&user)
+	result := helpers.DB.Clauses(clause.Returning{}).Create(&user)
 
-	if result.Error != nil && strings.Contains(result.Error.Error(), "duplicate key value violates unique") {
-		return false, errors.New("User with that email already exists")
-	} else if result.Error != nil {
-		return false, errors.New("Something bad happened")
+	if result.Error != nil {
+		return false, user, errors.New(result.Error.Error())
 	}
 
-	return true, nil
+	status, _, err := kong.CreateConsumer(input.Username)
+
+	if !status {
+		return false, user, errors.New(err.Error())
+	}
+
+	return status, user, nil
 }
+
+// SABB integration test
+// ARB integration test
+// Fix bug esri

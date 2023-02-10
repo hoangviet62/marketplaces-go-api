@@ -5,6 +5,6 @@ import (
 	controllers "github.com/hoangviet62/marketplaces-go-api/internal/controllers"
 )
 
-func Useroutes(router *gin.Engine) {
-	router.POST("/register", controllers.CreateUser)
+func UserRoutes(router *gin.Engine) {
+	router.POST("/users/register", controllers.CreateUser)
 }
