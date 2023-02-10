@@ -67,4 +67,6 @@ func KongMigration(routes []gin.RouteInfo) {
 			log.Error("[KONG] ROUTE ", error)
 		}
 	}
+
+	kong.GetConsumerJwt("test_user")
 }

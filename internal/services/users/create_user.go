@@ -54,7 +54,3 @@ func CreateUser(context *gin.Context) (bool, model.User, error) {
 
 	return status, user, nil
 }
-
-// SABB integration test
-// ARB integration test
-// Fix bug esri
