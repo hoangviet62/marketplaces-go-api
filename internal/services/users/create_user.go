@@ -28,8 +28,6 @@ func CreateUser(context *gin.Context) (bool, model.User, error) {
 	if err != nil {
 		return false, user, errors.New(err.Error())
 	}
-	var role model.Role
-	helpers.DB.Where("role_type = ?", "user").First(&role)
 
 	user = model.User{
 		Username: strings.ToLower(input.Username),
@@ -37,7 +35,7 @@ func CreateUser(context *gin.Context) (bool, model.User, error) {
 		Password: hashedPassword,
 		Mobile:   input.Mobile,
 		Status:   "inactive",
-		RoleId:   role.ID,
+		Role:     "customer",
 	}
 
 	result := helpers.DB.Clauses(clause.Returning{}).Create(&user)

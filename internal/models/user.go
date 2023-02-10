@@ -22,6 +22,23 @@ func (e Status) Value() (driver.Value, error) {
 	return string(e), nil
 }
 
+type Role string
+
+const (
+	Admin    Role = "admin"
+	Customer Role = "customer"
+	Seller   Role = "seller"
+)
+
+func (r *Role) Scan(value interface{}) error {
+	*r = Role(value.([]byte))
+	return nil
+}
+
+func (r Role) Value() (driver.Value, error) {
+	return string(r), nil
+}
+
 type User struct {
 	gorm.Model
 	Username  string `gorm:"size:255;index:idx_name,unique"`
@@ -31,8 +48,7 @@ type User struct {
 	Status    Status `json:"Status" sql:"type:ENUM('inactive', 'active')"`
 	CountryId *uint  `json:",omitempty"`
 	Country   Country
-	RoleId    uint `json:",omitempty"`
-	Role      Role
+	Role      Role `json:"role" sql:"type:ENUM('admin', 'customer', 'seller')"` // MySQL
 }
 
 type SignUpInput struct {

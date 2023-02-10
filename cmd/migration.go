@@ -18,14 +18,9 @@ func StartMigration() {
 		&model.OrderItem{},
 		&model.Order{},
 		&model.Product{},
-		&model.Role{},
 		&model.Sku{},
 		&model.Spec{},
 		&model.User{},
 	)
-
-	// Seed DB
-	var roles = []model.Role{{RoleType: "admin"}, {RoleType: "user"}, {RoleType: "seller"}}
-	helpers.DB.FirstOrCreate(&roles)
 	log.Info("==== END MIGRATIONS ====")
 }
