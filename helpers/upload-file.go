@@ -3,13 +3,14 @@ package helpers
 import (
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"mime/multipart"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 // file_type = "medias" or "images"
@@ -24,7 +25,9 @@ func UploadFile(context *gin.Context, files []*multipart.FileHeader, file_type s
 		replacer := strings.NewReplacer(" ", "-", ".", "-")
 		filename := replacer.Replace(strings.ToLower(originalFileName)) + "-" + fmt.Sprintf("%v", now.Unix()) + fileExt
 
-		out, err := os.Create("public/" + directory + "/" + file_type + "/" + filename)
+		path := "public/" + directory + "/" + file_type + "/"
+		os.MkdirAll(path, os.ModePerm)
+		out, err := os.Create(path + filename)
 		if err != nil {
 			return nil, err
 		}
