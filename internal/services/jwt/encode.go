@@ -7,12 +7,11 @@ import (
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 )
 
-func Encode(user model.User, secret string) string {
+func Encode(user model.User, key string, secret string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"foo": "bar",
-		"nbf": time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+		"username": user.Username,
+		"iat":      time.Now().UTC().Unix(),
 	})
-	tokenString, _ := token.SignedString(secret)
-
+	tokenString, _ := token.SignedString([]byte(secret))
 	return tokenString
 }

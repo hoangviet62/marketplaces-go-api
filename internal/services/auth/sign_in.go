@@ -3,11 +3,13 @@ package internal
 import (
 	"errors"
 
-	"fmt"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
-	"strings"
+	"github.com/hoangviet62/marketplaces-go-api/internal/services/jwt"
+	kong "github.com/hoangviet62/marketplaces-go-api/internal/services/kong"
 )
 
 type SignInResponse struct {
@@ -33,24 +35,20 @@ func SignIn(context *gin.Context) SignInResponse {
 	var user model.User
 	result := helpers.DB.First(&user, "username = ?", strings.ToLower(signInInput.Username))
 
-	fmt.Println("result", &user.Password)
 	if result.Error != nil {
-		signInResp.ErrorMessage = errors.New("Invalid email or Password")
+		signInResp.ErrorMessage = errors.New("invalid username or password")
 		return signInResp
 	}
 
 	if err := helpers.VerifyPassword(user.Password, signInInput.Password); err != nil {
-		signInResp.ErrorMessage = errors.New("Invalid email or Password")
+		signInResp.ErrorMessage = errors.New("invalid username or password")
 		return signInResp
 	}
 
-	// match := helpers.CheckPasswordHash(signInInput.Password, user.Password)
-	// pp.Print(match)
-	// if errorPass != nil {
-	// 	signInResp.ErrorMessage = errors.New("password invalid")
-	// 	return signInResp
-	// }
+	jwtData := kong.FetchConsumerJwt(user.Username)
+	jwtToken := jwt.Encode(user, jwtData.Data[0].Key, jwtData.Data[0].Secret)
 
 	signInResp.Status = true
+	signInResp.AuthToken = jwtToken
 	return signInResp
 }
