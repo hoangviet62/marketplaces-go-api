@@ -6,7 +6,7 @@ type OrderItem struct {
 	gorm.Model
 	Quantity int
 	Price    float64
-	OrderID  uint
+	OrderID  int32
 	Order    Order
 	Product  Product
 	Sku      Sku

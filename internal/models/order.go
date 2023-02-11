@@ -6,7 +6,7 @@ type Order struct {
 	gorm.Model
 	Code       string
 	Status     int
-	UserID     uint
+	UserID     int32
 	User       User
 	OrderItems []OrderItem
 }

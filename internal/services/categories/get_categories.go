@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData) {
+func GetCategories(context *gin.Context) ([]model.Category, helpers.PaginationData) {
 	perPage := viper.GetInt("PAGINATION.PER_PAGE")
 	page := viper.GetInt("PAGINATION.PAGE")
 	sort := viper.GetString("PAGINATION.SORT")
@@ -27,11 +27,11 @@ func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData)
 		sort = sortStr
 	}
 
-	var products []model.Product
+	var categories []model.Category
 	var totalItems int64
 	queriesMap := helpers.QueryBuilder(queries)
-	helpers.DB.Model(&model.Product{}).Count(&totalItems)
-	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Product{})
-	helpers.DB.Preload(clause.Associations).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)
-	return products, pagination
+	helpers.DB.Model(&model.Category{}).Count(&totalItems)
+	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Category{})
+	helpers.DB.Preload(clause.Associations).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&categories)
+	return categories, pagination
 }

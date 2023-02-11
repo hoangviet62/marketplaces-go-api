@@ -6,9 +6,9 @@ import (
 )
 
 func CategoryRoutes(router *gin.Engine) {
-	// router.GET("/products", controllers.GetProducts)
+	router.GET("/categories", controllers.GetCategories)
 	router.POST("/categories", controllers.CreateCategory)
-	// router.GET("/products/:id", controllers.GetProductById)
-	// router.PATCH("/products/:id", controllers.UpdateProduct)
-	// router.DELETE("/products/:id", controllers.UpdateProduct)
+	router.GET("/categories/:id", controllers.GetCategoryById)
+	router.PATCH("/categories/:id", controllers.UpdateCategory)
+	router.DELETE("/categories/:id", controllers.DeleteCategory)
 }

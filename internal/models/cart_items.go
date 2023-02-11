@@ -6,7 +6,7 @@ type CartItem struct {
 	gorm.Model
 	Quantity int
 	Price    float64
-	CartID   uint
+	CartID   int32
 	Cart     Cart
 	Product  Product
 	Sku      Sku

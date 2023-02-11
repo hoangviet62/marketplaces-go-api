@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	. "github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
+	"gorm.io/gorm/clause"
 )
 
 func GetProductAttachments(context *gin.Context) (map[string][]string, error) {
@@ -35,7 +36,7 @@ func GetProductAttachments(context *gin.Context) (map[string][]string, error) {
 	return attachments, nil
 }
 
-func UploadProductAttachment(productId uint, attachments []model.Attachment, attachment_type string) (model.Product, error) {
+func UploadProductAttachment(productId int32, attachments []model.Attachment, attachment_type string) (model.Product, error) {
 	var product model.Product
 
 	if err := DB.Where("id = ?", productId).First(&product).Error; err != nil {
@@ -56,7 +57,7 @@ func UploadProductAttachment(productId uint, attachments []model.Attachment, att
 		}
 	}
 
-	DB.Preload("Attachments").Preload("Images").Preload("Medias").Where("id = ?", productId).First(&product)
+	DB.Preload(clause.Associations).Where("id = ?", productId).First(&product)
 
 	return product, nil
 }

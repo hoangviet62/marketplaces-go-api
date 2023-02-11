@@ -7,7 +7,7 @@ import (
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 )
 
-func CreateAttachment(context *gin.Context, attachment_type string, attachment_id uint, url string) (model.Attachment, error) {
+func CreateAttachment(context *gin.Context, attachment_type string, attachment_id int32, url string) (model.Attachment, error) {
 	attachment := model.Attachment{AttachmentType: attachment_type, Url: url, AttachmentID: attachment_id}
 
 	if err := DB.Create(&attachment).Error; err != nil {
