@@ -17,6 +17,5 @@ func SignIn(context *gin.Context) {
 }
 
 func SignOut(context *gin.Context) {
-
 	context.JSON(http.StatusCreated, gin.H{"data": ""})
 }
