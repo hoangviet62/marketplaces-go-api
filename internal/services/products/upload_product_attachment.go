@@ -56,7 +56,7 @@ func UploadProductAttachment(productId uint, attachments []model.Attachment, att
 		}
 	}
 
-	DB.Preload("Attachments").Preload("Images").Preload("Medias").Where("id = ?", productId).First(&product)
+	DB.Preload("clause.Associations").Where("id = ?", productId).First(&product)
 
 	return product, nil
 }

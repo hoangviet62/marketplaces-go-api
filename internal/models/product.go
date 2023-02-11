@@ -19,8 +19,6 @@ type Product struct {
 	Images      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:ProductImages"`
 	Medias      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:ProductMedias"`
 	Attachments []Attachment `gorm:"polymorphic:Attachment;"`
-	CartItemID  int
-	OrderItemID int
 }
 
 type CreateProductInput struct {
