@@ -46,8 +46,8 @@ type User struct {
 	Email     string `gorm:"size:255;index:idx_email,unique"`
 	Mobile    string `gorm:"size:255;index:idx_mobile,unique"`
 	Status    Status `json:"Status" sql:"type:ENUM('inactive', 'active')"`
-	CountryId *int32 `json:",omitempty"`
-	Country   Country
+	CountryId *int32 `json:"Country,omitempty"`
+	Country   *Country
 	Role      Role `json:"role" sql:"type:ENUM('admin', 'customer', 'seller')"` // MySQL
 }
 
