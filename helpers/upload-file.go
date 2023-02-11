@@ -34,8 +34,7 @@ func UploadFile(context *gin.Context, files []*multipart.FileHeader, file_type s
 
 		defer out.Close()
 
-		fileExtract, err := file.Open()
-
+		fileExtract, _ := file.Open()
 		_, err = io.Copy(out, fileExtract)
 		if err != nil {
 			return nil, errors.New(err.Error())
