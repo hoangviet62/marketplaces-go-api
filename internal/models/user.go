@@ -60,6 +60,6 @@ type SignUpInput struct {
 }
 
 type SignInInput struct {
-	Email    string `binding:"required"`
+	Username string `binding:"required"`
 	Password string `binding:"required"`
 }
