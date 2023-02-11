@@ -8,7 +8,6 @@ import (
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 	kong "github.com/hoangviet62/marketplaces-go-api/internal/services/kong"
-	"gorm.io/gorm/clause"
 )
 
 func CreateUser(context *gin.Context) (bool, model.User, error) {
@@ -38,7 +37,7 @@ func CreateUser(context *gin.Context) (bool, model.User, error) {
 		Role:     "customer",
 	}
 
-	result := helpers.DB.Clauses(clause.Returning{}).Create(&user)
+	result := helpers.DB.Create(&user)
 
 	if result.Error != nil {
 		return false, user, errors.New(result.Error.Error())
