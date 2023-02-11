@@ -6,6 +6,7 @@ import (
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 	"github.com/spf13/viper"
+	"gorm.io/gorm/clause"
 	"strconv"
 )
 
@@ -31,6 +32,6 @@ func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData)
 	queriesMap := helpers.QueryBuilder(queries)
 	helpers.DB.Model(&model.Product{}).Count(&totalItems)
 	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Product{})
-	helpers.DB.Preload("clause.Associations").Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)
+	helpers.DB.Preload(clause.Associations).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)
 	return products, pagination
 }

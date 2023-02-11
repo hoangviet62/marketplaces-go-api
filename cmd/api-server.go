@@ -22,6 +22,7 @@ func StartApiServer() {
 	routes.ProductRoutes(router)
 	routes.CategoryRoutes(router)
 	routes.AttachmentRoutes(router)
+	routes.SkuRoutes(router)
 
 	// Kong migration for all routes
 	KongMigration(router.Routes())

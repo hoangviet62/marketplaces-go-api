@@ -8,11 +8,8 @@ import (
 )
 
 func CreateCategory(context *gin.Context) (model.Category, error) {
-	var input model.CreateCategoryInput
-	category := model.Category{Name: input.Name}
-	if err := context.ShouldBindJSON(&input); err != nil {
-		return category, errors.New(err.Error())
-	}
+	name := context.PostForm("name")
+	category := model.Category{Name: name}
 
 	if err := DB.Create(&category).Error; err != nil {
 		return category, errors.New(err.Error())

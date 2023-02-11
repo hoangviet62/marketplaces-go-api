@@ -1,62 +1,64 @@
 package internal
 
-// import (
-// 	"errors"
-// 	"github.com/gin-gonic/gin"
-// 	. "github.com/hoangviet62/marketplaces-go-api/helpers"
-// 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
-// )
+import (
+	"errors"
+	"github.com/gin-gonic/gin"
+	. "github.com/hoangviet62/marketplaces-go-api/helpers"
+	"gorm.io/gorm/clause"
 
-// func GetCategoryAttachments(context *gin.Context) (map[string][]string, error) {
-// 	// Validate input
-// 	// var input model.CreateProductInput
+	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
+)
 
-// 	form, _ := context.MultipartForm()
-// 	images := form.File["images"]
-// 	medias := form.File["medias"]
+func GetCategoryAttachments(context *gin.Context) (map[string][]string, error) {
+	// Validate input
+	// var input model.CreateProductInput
 
-// 	imagesPath, imageErr := UploadFile(context, images, "images", "products")
+	form, _ := context.MultipartForm()
+	images := form.File["images"]
+	medias := form.File["medias"]
 
-// 	if imageErr != nil {
-// 		return nil, errors.New(imageErr.Error())
-// 	}
+	imagesPath, imageErr := UploadFile(context, images, "images", "categories")
 
-// 	mediasPath, mediaErr := UploadFile(context, medias, "medias", "products")
+	if imageErr != nil {
+		return nil, errors.New(imageErr.Error())
+	}
 
-// 	if mediaErr != nil {
-// 		return nil, errors.New(mediaErr.Error())
-// 	}
+	mediasPath, mediaErr := UploadFile(context, medias, "medias", "categories")
 
-// 	attachments := map[string][]string{
-// 		"images": imagesPath,
-// 		"medias": mediasPath,
-// 	}
+	if mediaErr != nil {
+		return nil, errors.New(mediaErr.Error())
+	}
 
-// 	return attachments, nil
-// }
+	attachments := map[string][]string{
+		"images": imagesPath,
+		"medias": mediasPath,
+	}
 
-// func UploadCategoryAttachment(categoryId uint, attachments []model.Attachment, attachment_type string) (model.Category, error) {
-// 	var product model.Product
+	return attachments, nil
+}
 
-// 	if err := DB.Where("id = ?", categoryId).First(&category).Error; err != nil {
-// 		return category, errors.New("Record not found")
-// 	}
+func UploadCategoryAttachment(categoryId int32, attachments []model.Attachment, attachment_type string) (model.Category, error) {
+	var category model.Category
 
-// 	if err := DB.Model(&category).Update("Attachments", attachments).Error; err != nil {
-// 		return category, errors.New(err.Error())
-// 	}
+	if err := DB.Where("id = ?", categoryId).First(&category).Error; err != nil {
+		return category, errors.New("Record not found")
+	}
 
-// 	if attachment_type == "medias" {
-// 		if err := DB.Model(&category).Update("Medias", attachments).Error; err != nil {
-// 			return category, errors.New(err.Error())
-// 		}
-// 	} else {
-// 		if err := DB.Model(&category).Update("Images", attachments).Error; err != nil {
-// 			return category, errors.New(err.Error())
-// 		}
-// 	}
+	if err := DB.Model(&category).Update("Attachments", attachments).Error; err != nil {
+		return category, errors.New(err.Error())
+	}
 
-// 	DB.Preload("clause.Associations").Where("id = ?", categoryId).First(&category)
+	if attachment_type == "medias" {
+		if err := DB.Model(&category).Update("Medias", attachments).Error; err != nil {
+			return category, errors.New(err.Error())
+		}
+	} else {
+		if err := DB.Model(&category).Update("Images", attachments).Error; err != nil {
+			return category, errors.New(err.Error())
+		}
+	}
 
-// 	return category, nil
-// }
+	DB.Preload(clause.Associations).Where("id = ?", categoryId).First(&category)
+
+	return category, nil
+}

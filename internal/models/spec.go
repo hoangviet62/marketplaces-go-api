@@ -6,5 +6,5 @@ type Spec struct {
 	gorm.Model
 	Description string
 	SkuID       int
-	ProductID   uint
+	ProductID   int32
 }

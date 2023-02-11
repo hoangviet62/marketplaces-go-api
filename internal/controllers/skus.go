@@ -4,26 +4,26 @@ import (
 	"github.com/gin-gonic/gin"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 	attachmentService "github.com/hoangviet62/marketplaces-go-api/internal/services/attachments"
-	service "github.com/hoangviet62/marketplaces-go-api/internal/services/categories"
+	service "github.com/hoangviet62/marketplaces-go-api/internal/services/skus"
 	"net/http"
 )
 
-func GetCategories(context *gin.Context) {
-	var categories, pagination = service.GetCategories(context)
-	context.JSON(http.StatusOK, gin.H{"data": categories, "pagination": pagination})
+func GetSkus(context *gin.Context) {
+	var skus, pagination = service.GetSkus(context)
+	context.JSON(http.StatusOK, gin.H{"data": skus, "pagination": pagination})
 }
 
-func CreateCategory(context *gin.Context) {
+func CreateSku(context *gin.Context) {
 	// Validate input
 
-	category, err := service.CreateCategory(context)
+	sku, err := service.CreateSku(context)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	attachmentURLs, attachmentURLsErr := service.GetCategoryAttachments(context)
+	attachmentURLs, attachmentURLsErr := service.GetSkuAttachments(context)
 
 	if attachmentURLsErr != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": attachmentURLsErr.Error()})
@@ -37,7 +37,7 @@ func CreateCategory(context *gin.Context) {
 	var medias []model.Attachment
 
 	for _, imageURL := range imageURLs {
-		attachment, err := attachmentService.CreateAttachment(context, "category_images", category.ID, imageURL)
+		attachment, err := attachmentService.CreateAttachment(context, "sku_images", sku.ID, imageURL)
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -47,7 +47,7 @@ func CreateCategory(context *gin.Context) {
 	}
 
 	for _, mediaURL := range mediaURLs {
-		attachment, err := attachmentService.CreateAttachment(context, "category_medias", category.ID, mediaURL)
+		attachment, err := attachmentService.CreateAttachment(context, "sku_medias", sku.ID, mediaURL)
 
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -57,9 +57,9 @@ func CreateCategory(context *gin.Context) {
 		medias = append(medias, attachment)
 	}
 
-	var updatedCategory model.Category
+	var updatedSku model.Sku
 	if images != nil {
-		updatedCategory, err = service.UploadCategoryAttachment(category.ID, images, "images")
+		updatedSku, err = service.UploadSkuAttachment(sku.ID, images, "images")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -67,40 +67,40 @@ func CreateCategory(context *gin.Context) {
 	}
 
 	if medias != nil {
-		updatedCategory, err = service.UploadCategoryAttachment(category.ID, medias, "medias")
+		updatedSku, err = service.UploadSkuAttachment(sku.ID, medias, "medias")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"data": updatedCategory})
+	context.JSON(http.StatusCreated, gin.H{"data": updatedSku})
 }
 
-func GetCategoryById(context *gin.Context) {
-	category, err := service.GetCategoryById(context)
+func GetSkuById(context *gin.Context) {
+	sku, err := service.GetSkuById(context)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"data": category})
+	context.JSON(http.StatusOK, gin.H{"data": sku})
 }
 
-func UpdateCategory(context *gin.Context) {
-	updatedCategory, err := service.UpdateCategory(context, nil)
+func UpdateSku(context *gin.Context) {
+	updatedSku, err := service.UpdateSku(context, nil)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"data": updatedCategory})
+	context.JSON(http.StatusOK, gin.H{"data": updatedSku})
 }
 
-func DeleteCategory(context *gin.Context) {
-	isDeleted, err := service.DeleteCategory(context)
+func DeleteSku(context *gin.Context) {
+	isDeleted, err := service.DeleteSku(context)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
