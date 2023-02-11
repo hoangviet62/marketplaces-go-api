@@ -24,12 +24,13 @@ func CreateConsumer(username string) (bool, CreateConsumerResponse, error) {
 	payload := map[string]interface{}{
 		"username":  username,
 		"custom_id": username,
-		"tags":      []string{"User"},
+		"tags":      []string{"Customer"},
 	}
 	jsonValue, _ := json.Marshal(payload)
 	consumerResponse := CreateConsumerResponse{}
 	helpers.RestClient("POST", url, headers, bytes.NewBuffer(jsonValue), &consumerResponse)
 	if consumerResponse.Id != "" {
+		CreateConsumerJwt(consumerResponse.Id)
 		return true, consumerResponse, errors.New("")
 	} else {
 		return false, consumerResponse, errors.New(consumerResponse.ErrorMessage)

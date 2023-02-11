@@ -23,7 +23,7 @@ func CreatePlugin(resourceName string, resourceId string, pluginName string) (st
 	payload := map[string]interface{}{
 		"config": map[string]interface{}{
 			"key_claim_name":     "iss",
-			"maximum_expiration": 86400,
+			"maximum_expiration": 0,
 			"run_on_preflight":   true,
 		},
 		"name": pluginName,

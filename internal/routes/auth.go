@@ -6,6 +6,6 @@ import (
 )
 
 func AuthRoutes(router *gin.Engine) {
-	router.POST("/auth/sign-in", controllers.SignIn)
-	router.DELETE("/auth/sign-out", controllers.SignOut)
+	router.POST("/auth/sign_in", controllers.SignIn)
+	router.DELETE("/auth/sign_out", controllers.SignOut)
 }

@@ -37,15 +37,17 @@ func KongMigration(routes []gin.RouteInfo) {
 
 	for routePath, methods := range groupRoutes {
 		routeName := strings.Replace(strings.Replace(strings.Replace(routePath, "/", "", 1), "/:id", "_id", 1), "/*", "_", 1)
+		routeName = strings.ReplaceAll(routeName, "/", "_")
 		if slices.Contains(createdRoutes, routeName) {
 			log.Error("[KONG] ROUTE ", routeName, " already existed")
 			continue
 		}
 
 		payload := map[string]interface{}{
-			"name":    strings.Replace(routeName, "/", "-", 1),
-			"paths":   []string{routePath},
-			"methods": methods,
+			"name":       routeName,
+			"paths":      []string{routePath},
+			"methods":    methods,
+			"strip_path": false,
 		}
 
 		status, route, error := kong.CreateRoute(service.Id, payload)
