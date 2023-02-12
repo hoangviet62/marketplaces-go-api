@@ -9,6 +9,7 @@ import (
 )
 
 func StartApiServer() {
+
 	server := "0.0.0.0:" + viper.GetString("PORT")
 
 	router := gin.Default()

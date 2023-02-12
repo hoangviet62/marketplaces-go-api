@@ -1,9 +1,10 @@
 package internal
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	attachmentService "github.com/hoangviet62/marketplaces-go-api/internal/services/attachments"
-	"net/http"
 )
 
 func GetAttachments(context *gin.Context) {
