@@ -1,11 +1,12 @@
 package internal
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 	attachmentService "github.com/hoangviet62/marketplaces-go-api/internal/services/attachments"
 	service "github.com/hoangviet62/marketplaces-go-api/internal/services/categories"
-	"net/http"
 )
 
 func GetCategories(context *gin.Context) {

@@ -10,15 +10,14 @@ type MultiString []string
 
 type Product struct {
 	gorm.Model
-	ID          int32 `gorm:"primaryKey"`
 	Name        string
 	Description string
 	Tag         string
-	CategoryID  int32
+	CategoryID  uint
 	Spec        Spec
 	Skus        []Sku
-	CartItemID  *int32       `json:"CartItem,omitempty"`
-	OrderItemID *int32       `json:"OrderItem,omitempty"`
+	CartItemID  *uint        `json:"CartItem,omitempty"`
+	OrderItemID *uint        `json:"OrderItem,omitempty"`
 	Images      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:ProductImages"`
 	Medias      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:ProductMedias"`
 	Attachments []Attachment `json:"Attachments,omitempty" gorm:"polymorphic:Attachment;"`

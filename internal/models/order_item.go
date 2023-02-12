@@ -4,9 +4,9 @@ import "gorm.io/gorm"
 
 type OrderItem struct {
 	gorm.Model
-	Quantity int
+	Quantity uint
 	Price    float64
-	OrderID  int32
+	OrderID  uint
 	Order    Order
 	Product  Product
 	Sku      Sku

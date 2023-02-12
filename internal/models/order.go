@@ -5,8 +5,8 @@ import "gorm.io/gorm"
 type Order struct {
 	gorm.Model
 	Code       string
-	Status     int
-	UserID     int32
+	Status     uint
+	UserID     uint
 	User       User
 	OrderItems []OrderItem
 }

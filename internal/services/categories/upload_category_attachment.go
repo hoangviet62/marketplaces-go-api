@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+
 	"github.com/gin-gonic/gin"
 	. "github.com/hoangviet62/marketplaces-go-api/helpers"
 	"gorm.io/gorm/clause"
@@ -37,7 +38,7 @@ func GetCategoryAttachments(context *gin.Context) (map[string][]string, error) {
 	return attachments, nil
 }
 
-func UploadCategoryAttachment(categoryId int32, attachments []model.Attachment, attachment_type string) (model.Category, error) {
+func UploadCategoryAttachment(categoryId uint, attachments []model.Attachment, attachment_type string) (model.Category, error) {
 	var category model.Category
 
 	if err := DB.Where("id = ?", categoryId).First(&category).Error; err != nil {

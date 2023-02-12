@@ -5,6 +5,6 @@ import "gorm.io/gorm"
 type Country struct {
 	gorm.Model
 	Name   string
-	Status int
+	Status uint
 	Code   string
 }

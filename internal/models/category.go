@@ -4,7 +4,6 @@ import "gorm.io/gorm"
 
 type Category struct {
 	gorm.Model
-	ID          int32
 	Name        string
 	Products    []Product
 	Images      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:CategoryImages"`

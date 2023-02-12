@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+
 	"github.com/gin-gonic/gin"
 	. "github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
@@ -36,7 +37,7 @@ func GetSkuAttachments(context *gin.Context) (map[string][]string, error) {
 	return attachments, nil
 }
 
-func UploadSkuAttachment(skuId int32, attachments []model.Attachment, attachment_type string) (model.Sku, error) {
+func UploadSkuAttachment(skuId uint, attachments []model.Attachment, attachment_type string) (model.Sku, error) {
 	var sku model.Sku
 
 	if err := DB.Where("id = ?", skuId).First(&sku).Error; err != nil {

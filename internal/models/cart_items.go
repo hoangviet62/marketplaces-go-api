@@ -4,9 +4,9 @@ import "gorm.io/gorm"
 
 type CartItem struct {
 	gorm.Model
-	Quantity int
+	Quantity uint
 	Price    float64
-	CartID   int32
+	CartID   uint
 	Cart     Cart
 	Product  Product
 	Sku      Sku

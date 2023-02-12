@@ -5,6 +5,6 @@ import "gorm.io/gorm"
 type Spec struct {
 	gorm.Model
 	Description string
-	SkuID       int
-	ProductID   int32
+	SkuID       uint
+	ProductID   uint
 }

@@ -4,15 +4,13 @@ import "gorm.io/gorm"
 
 type Sku struct {
 	gorm.Model
-	ID int32 `gorm:"primaryKey"`
-
 	Description string
-	Quantity    int
+	Quantity    uint
 	Price       float64
-	Status      int
-	ProductID   int32
-	CartItemID  *int32 `json:"CartItem,omitempty"`
-	OrderItemID *int32 `json:"OrderItem,omitempty"`
+	Status      uint
+	ProductID   uint
+	CartItemID  *uint `json:"CartItem,omitempty"`
+	OrderItemID *uint `json:"OrderItem,omitempty"`
 	Spec        Spec
 	Images      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:SkuImages"`
 	Medias      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:SkuMedias"`
