@@ -29,9 +29,11 @@ func GetSkus(context *gin.Context) ([]model.Sku, helpers.PaginationData) {
 
 	var skus []model.Sku
 	var totalItems int64
+	searchValue, _ := context.GetQuery("search")
+	clauses := helpers.SearchBuilder("description", searchValue)
 	queriesMap := helpers.QueryBuilder(queries)
 	helpers.DB.Model(&model.Sku{}).Count(&totalItems)
 	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Sku{})
-	helpers.DB.Preload(clause.Associations).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&skus)
+	helpers.DB.Preload(clause.Associations).Clauses(clauses...).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&skus)
 	return skus, pagination
 }

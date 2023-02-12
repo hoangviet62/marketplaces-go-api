@@ -29,9 +29,11 @@ func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData)
 
 	var products []model.Product
 	var totalItems int64
+	searchValue, _ := context.GetQuery("search")
+	clauses := helpers.SearchBuilder("name", searchValue)
 	queriesMap := helpers.QueryBuilder(queries)
 	helpers.DB.Model(&model.Product{}).Count(&totalItems)
 	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Product{})
-	helpers.DB.Preload(clause.Associations).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)
+	helpers.DB.Preload(clause.Associations).Clauses(clauses...).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)
 	return products, pagination
 }
