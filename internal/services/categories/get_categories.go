@@ -29,9 +29,11 @@ func GetCategories(context *gin.Context) ([]model.Category, helpers.PaginationDa
 
 	var categories []model.Category
 	var totalItems int64
+	searchValue, _ := context.GetQuery("search")
+	clauses := helpers.SearchBuilder("name", searchValue)
 	queriesMap := helpers.QueryBuilder(queries)
 	helpers.DB.Model(&model.Category{}).Count(&totalItems)
 	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Category{})
-	helpers.DB.Preload(clause.Associations).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&categories)
+	helpers.DB.Preload(clause.Associations).Clauses(clauses...).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&categories)
 	return categories, pagination
 }
