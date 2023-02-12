@@ -41,7 +41,7 @@ func UploadProductAttachment(productId uint, attachments []model.Attachment, att
 	var product model.Product
 
 	if err := helpers.DB.Where("id = ?", productId).First(&product).Error; err != nil {
-		return product, errors.New("Record not found")
+		return product, errors.New("record not found")
 	}
 
 	if err := helpers.DB.Model(&product).Update("Attachments", attachments).Error; err != nil {
