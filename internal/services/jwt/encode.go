@@ -11,6 +11,7 @@ func Encode(user model.User, key string, secret string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": user.Username,
 		"iat":      time.Now().UTC().Unix(),
+		"iss":      key,
 	})
 	tokenString, _ := token.SignedString([]byte(secret))
 	return tokenString
