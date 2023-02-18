@@ -32,12 +32,14 @@ func KongMigration(routes []gin.RouteInfo) {
 
 	groupRoutes := make(map[string][]string)
 	for _, route := range routes {
-		groupRoutes[route.Path] = append(groupRoutes[route.Path], route.Method)
+		kongRoute := route.Path + "_" + route.Method
+		groupRoutes[kongRoute] = append(groupRoutes[route.Path], route.Method)
 	}
 
 	for routePath, methods := range groupRoutes {
 		routeName := strings.Replace(strings.Replace(strings.Replace(routePath, "/", "", 1), "/:id", "_id", 1), "/*", "_", 1)
 		routeName = strings.ReplaceAll(routeName, "/", "_")
+		newRoutePath := strings.Replace(routePath, "_"+methods[0], "", 1)
 		if slices.Contains(createdRoutes, routeName) {
 			log.Error("[KONG] ROUTE ", routeName, " already existed")
 			continue
@@ -45,7 +47,7 @@ func KongMigration(routes []gin.RouteInfo) {
 
 		payload := map[string]interface{}{
 			"name":       routeName,
-			"paths":      []string{routePath},
+			"paths":      []string{newRoutePath},
 			"methods":    methods,
 			"strip_path": false,
 		}
@@ -54,15 +56,21 @@ func KongMigration(routes []gin.RouteInfo) {
 		if status {
 			log.Info("[KONG] ROUTE ", route.Name, " is created")
 			for _, pluginName := range plugins {
-				if slices.Contains(unsecureRoutes, routePath) {
-					continue
+				isIgnore := false
+				for _, s := range unsecureRoutes {
+					if strings.Contains(routePath, s) {
+						isIgnore = true
+						break
+					}
 				}
 
-				status := kong.CreatePlugin("/routes", route.Id, pluginName)
-				if status {
-					log.Info("[KONG] ASSIGNED PLUGIN ", service.Name, " to ROUTE ", route.Name)
-				} else {
-					log.Error("[KONG] FAILED TO ASSIGN PLUGIN ", service.Name, " to ROUTE ", route.Name)
+				if !isIgnore {
+					status := kong.CreatePlugin("/routes", route.Id, pluginName)
+					if status {
+						log.Info("[KONG] ASSIGNED PLUGIN ", service.Name, " to ROUTE ", route.Name)
+					} else {
+						log.Error("[KONG] FAILED TO ASSIGN PLUGIN ", service.Name, " to ROUTE ", route.Name)
+					}
 				}
 			}
 		} else {
