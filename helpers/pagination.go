@@ -5,12 +5,12 @@ import (
 )
 
 type PaginationData struct {
-	NextPage     int    `json:"nextPage"`
-	PreviousPage int    `json:"previousPage"`
-	CurrentPage  int    `json:"currentPage"`
-	TotalPages   int    `json:"totalPages"`
+	NextPage     int    `json:"next_page"`
+	PreviousPage int    `json:"previous_page"`
+	CurrentPage  int    `json:"current_page"`
+	TotalPages   int    `json:"total_pages"`
 	Offset       int    `json:"offset"`
-	TotalItems   int64  `json:"totalItems"`
+	TotalItems   int64  `json:"total_items"`
 	Sort         string `json:"sort"`
 }
 

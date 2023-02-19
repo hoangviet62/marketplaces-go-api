@@ -41,13 +41,13 @@ func (r Role) Value() (driver.Value, error) {
 
 type User struct {
 	gorm.Model
-	Username  string `gorm:"size:255;index:idx_name,unique"`
-	Password  string `gorm:"size:255" json:",omitempty"`
-	Email     string `gorm:"size:255;index:idx_email,unique"`
-	Mobile    string `gorm:"size:255;index:idx_mobile,unique"`
-	Status    Status `json:"Status" sql:"type:ENUM('inactive', 'active')"`
-	Country   *Country
-	CountryId *uint `json:"Country,omitempty"`
+	Username  string `json:"username" gorm:"size:255;index:idx_name,unique"`
+	Password  string `json:"password" gorm:"size:255" json:",omitempty"`
+	Email     string `json:"email" gorm:"size:255;index:idx_email,unique"`
+	Mobile    string `json:"mobile" gorm:"size:255;index:idx_mobile,unique"`
+	Status    Status `json:"status" sql:"type:ENUM('inactive', 'active')"`
+	Country   *Country `json:"country"`
+	CountryId *uint `json:"country_id,omitempty"`
 	Role      Role  `json:"role" sql:"type:ENUM('admin', 'customer', 'seller')"` // MySQL
 }
 

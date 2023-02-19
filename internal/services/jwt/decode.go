@@ -3,6 +3,7 @@ package jwt
 import (
 	"errors"
 	"fmt"
+	"gorm.io/gorm/clause"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
@@ -27,7 +28,7 @@ func Decode(authToken string) (user model.User, err error) {
 
 	if ok && err == nil {
 		record = model.User{Username: username}
-		helpers.DB.First(&record)
+		helpers.DB.Preload(clause.Associations).First(&record)
 		return record, nil
 	}
 

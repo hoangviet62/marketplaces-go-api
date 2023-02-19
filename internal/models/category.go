@@ -4,11 +4,11 @@ import "gorm.io/gorm"
 
 type Category struct {
 	gorm.Model
-	Name        string
-	Products    []Product
-	Images      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:CategoryImages"`
-	Medias      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:CategoryMedias"`
-	Attachments []Attachment `json:"Attachments,omitempty" gorm:"polymorphic:Attachment;"`
+	Name        string `json:"name"`
+	Products    []Product `json:"products,omitempty"`
+	Images      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:CategoryImages" json:"images,omitempty"`
+	Medias      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:CategoryMedias" json:"medias,omitempty"`
+	Attachments []Attachment `json:"Attachments,omitempty" gorm:"polymorphic:Attachment;" json:"attachments,omitempty"`
 }
 
 type CreateCategoryInput struct {
