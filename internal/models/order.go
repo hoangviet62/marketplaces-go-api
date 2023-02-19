@@ -4,9 +4,9 @@ import "gorm.io/gorm"
 
 type Order struct {
 	gorm.Model
-	Code       string
-	Status     uint
-	UserID     uint
-	User       User
-	OrderItems []OrderItem
+	Code       string `json:"code"`
+	Status     uint `json:"status"`
+	UserID     uint `json:"user_id"`
+	User       User `json:"user"`
+	OrderItems []OrderItem `json:"order_items,omitempty"`
 }

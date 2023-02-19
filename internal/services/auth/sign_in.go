@@ -13,9 +13,9 @@ import (
 )
 
 type SignInResponse struct {
-	Status       bool
-	AuthToken    string
-	ErrorMessage error
+	Status       bool `json:"status"`
+	AuthToken    string `json:"auth_token"`
+	ErrorMessage error `json:"error_message"`
 }
 
 type SignInInput struct {

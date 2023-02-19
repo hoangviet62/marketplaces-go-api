@@ -21,3 +21,14 @@ func CreateUser(context *gin.Context) {
 	}
 	context.JSON(http.StatusCreated, gin.H{"data": data})
 }
+
+func GetCurrentUser(context *gin.Context) {
+	user, err := service.GetCurrentUser(context)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"data": user})
+}

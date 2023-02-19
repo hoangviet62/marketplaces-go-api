@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Spec struct {
 	gorm.Model
-	Description string
-	SkuID       uint
-	ProductID   uint
+	Description string `json:"description"`
+	SkuID       uint `json:"sku_id"`
+	ProductID   uint `json:"product_id"`
 }
