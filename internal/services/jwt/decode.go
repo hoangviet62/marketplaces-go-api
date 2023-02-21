@@ -28,7 +28,7 @@ func Decode(authToken string) (user model.User, err error) {
 
 	if ok && err == nil {
 		record = model.User{Username: username}
-		helpers.DB.Preload(clause.Associations).First(&record)
+		helpers.DB.Preload(clause.Associations).First(&record, "username = ?", record.Username)
 		return record, nil
 	}
 
