@@ -48,7 +48,7 @@ type User struct {
 	Status    Status `json:"status" sql:"type:ENUM('inactive', 'active')"`
 	Country   *Country `json:"country"`
 	CountryId *uint `json:"country_id,omitempty"`
-	Role      Role  `json:"role" sql:"type:ENUM('admin', 'customer', 'seller')"` // MySQL
+	Role      Role  `json:"role" sql:"type:ENUM('admin', 'customer', 'seller')" gorm:"default:customer"` // MySQL
 }
 
 type SignUpInput struct {
@@ -57,6 +57,7 @@ type SignUpInput struct {
 	Password        string `binding:"required,min=8"`
 	PasswordConfirm string `binding:"required"`
 	Mobile          string `binding:"required"`
+	Role 			Role `sql:"type:ENUM('admin', 'customer', 'seller')" gorm:"default:customer"`
 }
 
 type SignInInput struct {

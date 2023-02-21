@@ -16,7 +16,7 @@ type Product struct {
 	Skus        []Sku `json:"skus,omitempty"`
 	CartItemID  *uint        `json:"cart_item,omitempty"`
 	OrderItemID *uint        `json:"order_item,omitempty"`
-	Images      []Attachment `json:"images,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:ProductImages"`
-	Medias      []Attachment `json:"medias,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:ProductMedias"`
+	Images      []Attachment `json:"images,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:product_images"`
+	Medias      []Attachment `json:"medias,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:product_medias"`
 	Attachments []Attachment `json:"attachments,omitempty" gorm:"polymorphic:Attachment;"`
 }
