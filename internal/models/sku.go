@@ -12,7 +12,7 @@ type Sku struct {
 	CartItemID  *uint `json:"cart_item_id,omitempty"`
 	OrderItemID *uint `json:"order_item_id,omitempty"`
 	Spec        Spec `json:"spec,omitempty"`
-	Images      []Attachment `json:"images,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:SkuImages"`
-	Medias      []Attachment `json:"medias,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:SkuMedias"`
+	Images      []Attachment `json:"images,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:sku_images"`
+	Medias      []Attachment `json:"medias,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:sku_medias"`
 	Attachments []Attachment `json:"attachments,omitempty" gorm:"polymorphic:Attachment;"`
 }

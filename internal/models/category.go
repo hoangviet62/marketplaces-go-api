@@ -8,7 +8,7 @@ type Category struct {
 	Products    []Product `json:"products,omitempty"`
 	Images      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:CategoryImages" json:"images,omitempty"`
 	Medias      []Attachment `gorm:"polymorphic:Attachment;polymorphicValue:CategoryMedias" json:"medias,omitempty"`
-	Attachments []Attachment `json:"Attachments,omitempty" gorm:"polymorphic:Attachment;" json:"attachments,omitempty"`
+	Attachments []Attachment `gorm:"polymorphic:Attachment;" json:"attachments,omitempty"`
 }
 
 type CreateCategoryInput struct {
