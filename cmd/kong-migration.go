@@ -47,7 +47,7 @@ func KongMigration(routes []gin.RouteInfo) {
 
 		methods = append(methods, "OPTIONS")
 		if strings.Contains(routeName, "_id_") {
-			newRoutePath = "~" + newRoutePath
+			newRoutePath = "~" + strings.Replace(newRoutePath, ":id", `\d+`, 1)
 		}
 
 		payload := map[string]interface{}{
