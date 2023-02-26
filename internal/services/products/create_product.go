@@ -15,8 +15,9 @@ func CreateProduct(context *gin.Context) (model.Product, error) {
 	// var input model.CreateProductInput
 	name := context.PostForm("name")
 	description := context.PostForm("description")
+	tag := context.PostForm("tag")
 	categoryId, _ := strconv.ParseUint(context.PostForm("category_id"), 10, 8)
-	product := model.Product{Name: name, Description: description, CategoryID: uint(categoryId)}
+	product := model.Product{Name: name, Tag: tag, Description: description, CategoryID: uint(categoryId)}
 
 	if err := helpers.DB.Create(&product).Error; err != nil {
 		return product, errors.New(err.Error())
