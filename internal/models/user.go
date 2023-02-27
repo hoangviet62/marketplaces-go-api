@@ -2,8 +2,6 @@ package internal
 
 import (
 	"database/sql/driver"
-
-	"gorm.io/gorm"
 )
 
 type Status string
@@ -40,15 +38,15 @@ func (r Role) Value() (driver.Value, error) {
 }
 
 type User struct {
-	gorm.Model
-	Username  string `json:"username" gorm:"size:255;index:idx_name,unique"`
-	Password  string `json:"-" gorm:"size:255"`
-	Email     string `json:"email" gorm:"size:255;index:idx_email,unique"`
-	Mobile    string `json:"mobile" gorm:"size:255;index:idx_mobile,unique"`
-	Status    Status `json:"status" sql:"type:ENUM('inactive', 'active')"`
+	Base
+	Username  string   `json:"username" gorm:"size:255;index:idx_name,unique"`
+	Password  string   `json:"-" gorm:"size:255"`
+	Email     string   `json:"email" gorm:"size:255;index:idx_email,unique"`
+	Mobile    string   `json:"mobile" gorm:"size:255;index:idx_mobile,unique"`
+	Status    Status   `json:"status" sql:"type:ENUM('inactive', 'active')"`
 	Country   *Country `json:"country"`
-	CountryId *uint `json:"country_id,omitempty"`
-	Role      Role  `json:"role" sql:"type:ENUM('admin', 'customer', 'seller')" gorm:"default:customer"` // MySQL
+	CountryId *uint    `json:"country_id,omitempty"`
+	Role      Role     `json:"role" sql:"type:ENUM('admin', 'customer', 'seller')" gorm:"default:customer"` // MySQL
 }
 
 type SignUpInput struct {
@@ -57,7 +55,7 @@ type SignUpInput struct {
 	Password        string `binding:"required,min=8"`
 	PasswordConfirm string `binding:"required"`
 	Mobile          string `binding:"required"`
-	Role 			Role `sql:"type:ENUM('admin', 'customer', 'seller')" gorm:"default:customer"`
+	Role            Role   `sql:"type:ENUM('admin', 'customer', 'seller')" gorm:"default:customer"`
 }
 
 type SignInInput struct {

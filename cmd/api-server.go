@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	routes "github.com/hoangviet62/marketplaces-go-api/internal/routes"
@@ -26,7 +27,10 @@ func StartApiServer() {
 	routes.SkuRoutes(router)
 	routes.BannerRoutes(router)
 	// Kong migration for all routes
-	KongMigration(router.Routes())
+	shouldMigrate, _ := strconv.ParseBool(viper.GetString("KONG.DISABLED"))
+	if !shouldMigrate {
+		KongMigration(router.Routes())
+	}
 
 	router.Run(server)
 }
