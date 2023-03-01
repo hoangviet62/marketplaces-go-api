@@ -25,6 +25,12 @@ func GetAttachments(context *gin.Context) ([]model.Attachment, helpers.Paginatio
 		sort = sortStr
 	}
 
+	perPageStr, perPageOk := context.GetQuery("per_page")
+
+	if perPageOk {
+		perPage, _ = strconv.Atoi(perPageStr)
+	}
+	
 	var attachments []model.Attachment
 	var totalItems int64
 	queriesMap := helpers.QueryBuilder(queries)

@@ -27,6 +27,12 @@ func GetCategories(context *gin.Context) ([]model.Category, helpers.PaginationDa
 		sort = sortStr
 	}
 
+	perPageStr, perPageOk := context.GetQuery("per_page")
+
+	if perPageOk {
+		perPage, _ = strconv.Atoi(perPageStr)
+	}
+
 	var categories []model.Category
 	var totalItems int64
 	searchValue, _ := context.GetQuery("search")

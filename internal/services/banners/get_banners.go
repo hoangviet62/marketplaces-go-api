@@ -26,6 +26,12 @@ func GetBanners(context *gin.Context) ([]model.Banner, helpers.PaginationData) {
 	if sortOk {
 		sort = sortStr
 	}
+	
+	perPageStr, perPageOk := context.GetQuery("per_page")
+
+	if perPageOk {
+		perPage, _ = strconv.Atoi(perPageStr)
+	}
 
 	var banners []model.Banner
 	var totalItems int64

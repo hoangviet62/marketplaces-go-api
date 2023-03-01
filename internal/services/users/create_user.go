@@ -34,7 +34,7 @@ func CreateUser(context *gin.Context) (bool, model.User, error) {
 		Password: hashedPassword,
 		Mobile:   input.Mobile,
 		Status:   "inactive",
-		Role:     input.Role,
+		// Role:     input.Role,
 	}
 
 	result := helpers.DB.Create(&user)
