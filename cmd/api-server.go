@@ -27,8 +27,8 @@ func StartApiServer() {
 	routes.SkuRoutes(router)
 	routes.BannerRoutes(router)
 	// Kong migration for all routes
-	shouldMigrate, _ := strconv.ParseBool(viper.GetString("KONG.DISABLED"))
-	if !shouldMigrate {
+	shouldMigrate, _ := strconv.ParseBool(viper.GetString("KONG.SHOULD_MIGRATE"))
+	if shouldMigrate {
 		KongMigration(router.Routes())
 	}
 
