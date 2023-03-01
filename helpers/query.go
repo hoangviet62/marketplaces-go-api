@@ -8,7 +8,7 @@ import (
 func QueryBuilder(queries url.Values) map[string]interface{} {
 	result := make(map[string]interface{})
 	for k, v := range queries {
-		if k != "sort" && k != "page" && k != "search" && k != "perPage" {
+		if k != "sort" && k != "page" && k != "search" && k != "per_page" {
 			result[k] = v
 		}
 	}
