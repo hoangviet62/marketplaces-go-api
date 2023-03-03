@@ -33,7 +33,7 @@ func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData)
 		perPage, _ = strconv.Atoi(perPageStr)
 	}
 
-	var products []model.Product
+	products := []model.Product{}
 	var totalItems int64
 	searchValue, _ := context.GetQuery("search")
 	clauses := helpers.SearchBuilder("name", searchValue)

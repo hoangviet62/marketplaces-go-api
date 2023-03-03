@@ -33,7 +33,7 @@ func GetSkus(context *gin.Context) ([]model.Sku, helpers.PaginationData) {
 		perPage, _ = strconv.Atoi(perPageStr)
 	}
 
-	var skus []model.Sku
+	skus := []model.Sku{}
 	var totalItems int64
 	searchValue, _ := context.GetQuery("search")
 	clauses := helpers.SearchBuilder("description", searchValue)

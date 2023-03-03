@@ -9,7 +9,7 @@ import (
 )
 
 func GetCategoryById(context *gin.Context) (model.Category, error) {
-	var category model.Category
+	category := model.Category{}
 	if err := DB.Preload(clause.Associations).Where("id = ?", context.Param("id")).First(&category).Error; err != nil {
 		return category, errors.New("Record not found")
 	}
