@@ -18,7 +18,7 @@ func GetPaginationData(page int, perPage int, totalItems int64, sort string, mod
 	// Calculate Total Pages
 	var totalRows int64
 	DB.Model(model).Count(&totalRows)
-	totalPages := math.Ceil(float64(totalRows / int64(perPage)))
+	totalPages := math.Ceil(float64(totalRows) / float64(perPage))
 
 	// Calculate offset
 	offset := (page - 1) * perPage
