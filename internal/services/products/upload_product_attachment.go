@@ -38,7 +38,7 @@ func GetProductAttachments(context *gin.Context) (map[string][]string, error) {
 }
 
 func UploadProductAttachment(productId uint, attachments []model.Attachment, attachment_type string) (model.Product, error) {
-	var product model.Product
+	product := model.Product{}
 
 	if err := helpers.DB.Where("id = ?", productId).First(&product).Error; err != nil {
 		return product, errors.New("record not found")

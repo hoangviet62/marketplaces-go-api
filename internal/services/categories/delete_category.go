@@ -8,7 +8,7 @@ import (
 )
 
 func DeleteCategory(context *gin.Context) (bool, error) {
-	var category model.Category
+	category := model.Category{}
 
 	if err := DB.Where("id = ?", context.Param("id")).First(&category).Error; err != nil {
 		return false, errors.New(err.Error())

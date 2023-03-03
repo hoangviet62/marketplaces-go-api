@@ -10,7 +10,7 @@ import (
 )
 
 func UpdateProduct(context *gin.Context, attachments []model.Attachment) (model.Product, error) {
-	var product model.Product
+	product := model.Product{}
 	if err := helpers.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
 		return product, errors.New("record not found")
 	}

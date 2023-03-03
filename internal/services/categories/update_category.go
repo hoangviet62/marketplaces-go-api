@@ -10,7 +10,7 @@ import (
 )
 
 func UpdateCategory(context *gin.Context, attachments []model.Attachment) (model.Category, error) {
-	var category model.Category
+	category := model.Category{}
 	if err := DB.Where("id = ?", context.Param("id")).First(&category).Error; err != nil {
 		return category, errors.New("Record not found")
 	}

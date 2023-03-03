@@ -33,7 +33,7 @@ func GetCategories(context *gin.Context) ([]model.Category, helpers.PaginationDa
 		perPage, _ = strconv.Atoi(perPageStr)
 	}
 
-	var categories []model.Category
+	categories := []model.Category{}
 	var totalItems int64
 	searchValue, _ := context.GetQuery("search")
 	clauses := helpers.SearchBuilder("name", searchValue)

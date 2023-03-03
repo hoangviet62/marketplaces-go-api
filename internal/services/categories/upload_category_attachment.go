@@ -39,7 +39,7 @@ func GetCategoryAttachments(context *gin.Context) (map[string][]string, error) {
 }
 
 func UploadCategoryAttachment(categoryId uint, attachments []model.Attachment, attachment_type string) (model.Category, error) {
-	var category model.Category
+	category := model.Category{}
 
 	if err := DB.Where("id = ?", categoryId).First(&category).Error; err != nil {
 		return category, errors.New("Record not found")

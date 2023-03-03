@@ -9,7 +9,7 @@ import (
 )
 
 func DeleteProduct(context *gin.Context) (bool, error) {
-	var product model.Product
+	product := model.Product{}
 
 	if err := helpers.DB.Where("id = ?", context.Param("id")).First(&product).Error; err != nil {
 		return false, errors.New(err.Error())
