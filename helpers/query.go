@@ -1,8 +1,9 @@
 package helpers
 
 import (
-	"gorm.io/gorm/clause"
 	"net/url"
+
+	"gorm.io/gorm/clause"
 )
 
 func QueryBuilder(queries url.Values) map[string]interface{} {
@@ -17,6 +18,8 @@ func QueryBuilder(queries url.Values) map[string]interface{} {
 
 func SearchBuilder(fieldName string, value string) []clause.Expression {
 	clauses := make([]clause.Expression, 0)
-	clauses = append(clauses, clause.Like{Column: fieldName, Value: value + "%"})
+	if fieldName != "" {
+		clauses = append(clauses, clause.Like{Column: fieldName, Value: value + "%"})
+	}
 	return clauses
 }

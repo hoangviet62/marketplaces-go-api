@@ -2,12 +2,13 @@ package internal
 
 import (
 	// "fmt"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 	"github.com/spf13/viper"
 	"gorm.io/gorm/clause"
-	"strconv"
 )
 
 func GetCarts(context *gin.Context) ([]model.Cart, helpers.PaginationData) {
@@ -36,10 +37,10 @@ func GetCarts(context *gin.Context) ([]model.Cart, helpers.PaginationData) {
 	carts := []model.Cart{}
 	var totalItems int64
 	searchValue, _ := context.GetQuery("search")
-	clauses := helpers.SearchBuilder("name", searchValue)
+	clauses := helpers.SearchBuilder("", searchValue)
 	queriesMap := helpers.QueryBuilder(queries)
 	helpers.DB.Model(&model.Cart{}).Count(&totalItems)
 	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Cart{})
-	helpers.DB.Preload(clause.Associations).Clauses(clauses...).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&carts)
+	helpers.DB.Preload(clause.Associations).Preload("CartItem.Product").Clauses(clauses...).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&carts)
 	return carts, pagination
 }
