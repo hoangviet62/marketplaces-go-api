@@ -12,6 +12,11 @@ func GetCarts(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"data": carts, "pagination": pagination})
 }
 
+func GetUserCart(context *gin.Context) {
+	var cart, pagination = service.GetUserCart(context)
+	context.JSON(http.StatusOK, gin.H{"data": cart, "pagination": pagination})
+}
+
 func CreateCart(context *gin.Context) {
 	// Validate input
 	cart, err := service.CreateCart(context)
