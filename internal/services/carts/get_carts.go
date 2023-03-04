@@ -41,6 +41,6 @@ func GetCarts(context *gin.Context) ([]model.Cart, helpers.PaginationData) {
 	queriesMap := helpers.QueryBuilder(queries)
 	helpers.DB.Model(&model.Cart{}).Count(&totalItems)
 	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Cart{})
-	helpers.DB.Preload(clause.Associations).Preload("CartItem.Product").Clauses(clauses...).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&carts)
+	helpers.DB.Preload(clause.Associations).Preload("CartItem.Product.Images").Preload("CartItem.Product.Medias").Clauses(clauses...).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&carts)
 	return carts, pagination
 }

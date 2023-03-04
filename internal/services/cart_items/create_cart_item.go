@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	helpers "github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
-	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm/clause"
 )
 
@@ -22,7 +21,6 @@ func CreateCartItem(context *gin.Context) (model.CartItem, error) {
 
 	helpers.DB.Preload(clause.Associations).First(&product, "id = ?", context.PostForm("product_id"))
 	helpers.DB.Preload(clause.Associations).First(&cart, "id = ?", cart_id)
-	log.Info("cart", cart)
 
 	cartItem = model.CartItem{Product: product, Cart: cart, CartID: uint(cart_id), Price: price, Quantity: uint(quantity)}
 
