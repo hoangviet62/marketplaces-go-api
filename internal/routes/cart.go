@@ -6,9 +6,9 @@ import (
 )
 
 func CartRoutes(router *gin.Engine) {
-	router.GET("/cart", controllers.GetCarts)
-	router.POST("/cart", controllers.CreateCart)
-	router.GET("/cart/:id", controllers.GetCartById)
-	router.PATCH("/cart/:id", controllers.UpdateCart)
-	router.DELETE("/cart/:id", controllers.DeleteCart)
+	router.GET("/carts", controllers.GetCarts)
+	router.POST("/carts", controllers.CreateCart)
+	router.GET("/carts/:id", controllers.GetCartById)
+	router.PATCH("/carts/:id", controllers.UpdateCart)
+	router.DELETE("/carts/:id", controllers.DeleteCart)
 }
