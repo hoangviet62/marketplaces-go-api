@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	helpers "github.com/hoangviet62/marketplaces-go-api/helpers"
@@ -10,29 +11,18 @@ import (
 )
 
 func CreateCartItem(context *gin.Context) (model.CartItem, error) {
-	var input model.CreateCartItemInput
+	var cartItem model.CartItem
 	product := model.Product{}
-	cart := model.Cart{}
-	cartItem := model.CartItem{}
+	var cart model.Cart
 
-	if err := context.ShouldBindJSON(&input); err != nil {
-		return cartItem, errors.New(err.Error())
-	}
+	price, _ := strconv.ParseFloat(context.PostForm("price"), 64)
+	quantity, _ := strconv.ParseUint(context.PostForm("quantity"), 10, 8)
+	cart_id, _ := strconv.ParseUint(context.PostForm("cart_id"), 10, 8)
 
-	helpers.DB.Preload(clause.Associations).First(&product, "id = ?", input.ProductID)
-	helpers.DB.Preload(clause.Associations).First(&cart, "id = ?", input.CartID)
-	// var cartItem model.CartItem
-	// product := model.Product{}
-	// var cart model.Cart
+	helpers.DB.Preload(clause.Associations).First(&product, "id = ?", context.PostForm("product_id"))
+	helpers.DB.Preload(clause.Associations).First(&cart, "id = ?", cart_id)
 
-	// price, _ := strconv.ParseFloat(context.PostForm("price"), 64)
-	// quantity, _ := strconv.ParseUint(context.PostForm("quantity"), 10, 8)
-	// cart_id, _ := strconv.ParseUint(context.PostForm("cart_id"), 10, 8)
-
-	// helpers.DB.Preload(clause.Associations).First(&product, "id = ?", context.PostForm("product_id"))
-	// helpers.DB.Preload(clause.Associations).First(&cart, "id = ?", cart_id)
-
-	cartItem = model.CartItem{Product: product, Cart: cart, CartID: input.CartID, Price: input.Price, Quantity: input.Quantity}
+	cartItem = model.CartItem{Product: product, Cart: cart, CartID: uint(cart_id), Price: price, Quantity: uint(quantity)}
 
 	if err := helpers.DB.Create(&cartItem).Error; err != nil {
 		return cartItem, errors.New(err.Error())
