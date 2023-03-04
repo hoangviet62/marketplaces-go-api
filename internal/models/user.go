@@ -46,7 +46,7 @@ type User struct {
 	Status    Status   `json:"status" sql:"type:ENUM('inactive', 'active')"`
 	Country   *Country `json:"country"`
 	CountryId *uint    `json:"country_id,omitempty"`
-	Cart      Cart     `json:"cart,omitempty"`
+	Cart      *Cart    `json:"cart,omitempty"`
 	Role      Role     `json:"role" sql:"type:ENUM('admin', 'customer', 'seller')" gorm:"default:customer"` // MySQL
 }
 
