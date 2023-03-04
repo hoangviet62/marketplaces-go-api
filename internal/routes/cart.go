@@ -7,6 +7,7 @@ import (
 
 func CartRoutes(router *gin.Engine) {
 	router.GET("/carts", controllers.GetCarts)
+	router.GET("/carts/get_user_cart", controllers.GetUserCart)
 	router.POST("/carts", controllers.CreateCart)
 	router.GET("/carts/:id", controllers.GetCartById)
 	router.PATCH("/carts/:id", controllers.UpdateCart)
