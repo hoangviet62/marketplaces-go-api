@@ -36,7 +36,12 @@ func CreateCartItem(context *gin.Context) (model.CartItem, error) {
 			return cartItem, errors.New(err.Error())
 		}
 	} else {
-		input := model.CartItem{Product: existedCartItem.Product, Price: price, Quantity: existedCartItem.Quantity + 1}
+		updatedQuantity := existedCartItem.Quantity + uint(quantity)
+		if err != nil {
+			updatedQuantity = uint(existedCartItem.Quantity + 1)
+		}
+
+		input := model.CartItem{Product: existedCartItem.Product, Price: price, Quantity: updatedQuantity}
 		cartItem = existedCartItem
 		if err := helpers.DB.Model(&cartItem).Updates(input).Error; err != nil {
 			return cartItem, errors.New(err.Error())
