@@ -1,7 +1,9 @@
 package internal
 
 import (
+	"encoding/json"
 	"errors"
+
 	// "fmt"
 	"strconv"
 
@@ -23,23 +25,27 @@ func UpdateProduct(context *gin.Context) (model.Product, error) {
 	tag := context.PostForm("tag")
 	categoryId, _ := strconv.ParseUint(context.PostForm("category_id"), 10, 8)
 
-	deleteImages := context.PostFormArray("delete_images")
-	deleteMedias := context.PostFormArray("delete_medias")
+	deleteImages := context.PostForm("delete_images")
+	deleteMedias := context.PostForm("delete_medias")
 
-	if len(deleteImages) > 0 {
-		for _, image := range deleteImages {
-			imageId, _ := strconv.ParseUint(image, 10, 8)
-			_, error := service.DeleteAttachment(context, uint(imageId))
+	var deleteImagesArr []int
+	_ = json.Unmarshal([]byte(deleteImages), &deleteImagesArr)
+
+	var deleteMediasArr []int
+	_ = json.Unmarshal([]byte(deleteMedias), &deleteMediasArr)
+
+	if len(deleteImagesArr) > 0 {
+		for _, image := range deleteImagesArr {
+			_, error := service.DeleteAttachment(context, uint(image))
 			if error != nil {
 				return product, errors.New(error.Error())
 			}
 		}
 	}
 
-	if len(deleteMedias) > 0 {
-		for _, image := range deleteMedias {
-			imageId, _ := strconv.ParseUint(image, 10, 8)
-			_, error := service.DeleteAttachment(context, uint(imageId))
+	if len(deleteMediasArr) > 0 {
+		for _, media := range deleteMediasArr {
+			_, error := service.DeleteAttachment(context, uint(media))
 			if error != nil {
 				return product, errors.New(error.Error())
 			}
