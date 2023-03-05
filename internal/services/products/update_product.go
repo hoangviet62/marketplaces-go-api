@@ -39,13 +39,6 @@ func UpdateProduct(context *gin.Context) (model.Product, error) {
 		if error != nil {
 			return product, errors.New(error.Error())
 		}
-		// for _, image := range deleteImages {
-		// 	imageId, _ := strconv.ParseUint(image, 10, 8)
-		// 	_, error := service.DeleteAttachment(context, uint(imageId))
-		// 	if error != nil {
-		// 		return product, errors.New(error.Error())
-		// 	}
-		// }
 	}
 
 	if len(deleteMedias) > 0 {
@@ -53,13 +46,6 @@ func UpdateProduct(context *gin.Context) (model.Product, error) {
 		if error != nil {
 			return product, errors.New(error.Error())
 		}
-		// for _, image := range deleteMedias {
-		// 	imageId, _ := strconv.ParseUint(image, 10, 8)
-		// 	_, error := service.DeleteAttachment(context, uint(imageId))
-		// if error != nil {
-		// 	return product, errors.New(error.Error())
-		// }
-		// }
 	}
 
 	input := model.Product{
