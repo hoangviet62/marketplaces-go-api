@@ -21,3 +21,13 @@ func DeleteAttachment(context *gin.Context, id uint) (bool, error) {
 
 	return true, nil
 }
+
+func DeleteAttachmentsArr(context *gin.Context, attachments []int) (bool, error) {
+	for _, attachment := range attachments {
+		_, error := DeleteAttachment(context, uint(attachment))
+		if error != nil {
+			return false, errors.New(error.Error())
+		}
+	}
+	return true, nil
+}

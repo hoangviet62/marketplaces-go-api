@@ -34,22 +34,32 @@ func UpdateProduct(context *gin.Context) (model.Product, error) {
 	var deleteMediasArr []int
 	_ = json.Unmarshal([]byte(deleteMedias), &deleteMediasArr)
 
-	if len(deleteImagesArr) > 0 {
-		for _, image := range deleteImagesArr {
-			_, error := service.DeleteAttachment(context, uint(image))
-			if error != nil {
-				return product, errors.New(error.Error())
-			}
+	if len(deleteImages) > 0 {
+		_, error := service.DeleteAttachmentsArr(context, deleteImagesArr)
+		if error != nil {
+			return product, errors.New(error.Error())
 		}
+		// for _, image := range deleteImages {
+		// 	imageId, _ := strconv.ParseUint(image, 10, 8)
+		// 	_, error := service.DeleteAttachment(context, uint(imageId))
+		// 	if error != nil {
+		// 		return product, errors.New(error.Error())
+		// 	}
+		// }
 	}
 
-	if len(deleteMediasArr) > 0 {
-		for _, media := range deleteMediasArr {
-			_, error := service.DeleteAttachment(context, uint(media))
-			if error != nil {
-				return product, errors.New(error.Error())
-			}
+	if len(deleteMedias) > 0 {
+		_, error := service.DeleteAttachmentsArr(context, deleteMediasArr)
+		if error != nil {
+			return product, errors.New(error.Error())
 		}
+		// for _, image := range deleteMedias {
+		// 	imageId, _ := strconv.ParseUint(image, 10, 8)
+		// 	_, error := service.DeleteAttachment(context, uint(imageId))
+		// if error != nil {
+		// 	return product, errors.New(error.Error())
+		// }
+		// }
 	}
 
 	input := model.Product{
