@@ -16,16 +16,31 @@ func CreateCartItem(context *gin.Context) (model.CartItem, error) {
 	var cart model.Cart
 
 	price, _ := strconv.ParseFloat(context.PostForm("price"), 64)
-	quantity, _ := strconv.ParseUint(context.PostForm("quantity"), 10, 8)
-	cart_id, _ := strconv.ParseUint(context.PostForm("cart_id"), 10, 8)
+	quantity, err := strconv.ParseUint(context.PostForm("quantity"), 10, 8)
 
-	helpers.DB.Preload(clause.Associations).First(&product, "id = ?", context.PostForm("product_id"))
+	if err != nil {
+		quantity = 1
+	}
+
+	cart_id, _ := strconv.ParseUint(context.PostForm("cart_id"), 10, 8)
+	productId, _ := strconv.ParseUint(context.PostForm("product_id"), 10, 8)
+
 	helpers.DB.Preload(clause.Associations).First(&cart, "id = ?", cart_id)
 
-	cartItem = model.CartItem{Product: product, Cart: cart, CartID: uint(cart_id), Price: price, Quantity: uint(quantity)}
+	existedCartItem, existedCartItemErr := GetCartItemByProductID(context, uint(productId))
 
-	if err := helpers.DB.Create(&cartItem).Error; err != nil {
-		return cartItem, errors.New(err.Error())
+	if existedCartItemErr != nil {
+		helpers.DB.Preload(clause.Associations).First(&product, "id = ?", context.PostForm("product_id"))
+		cartItem = model.CartItem{Product: product, ProductID: uint(productId), Cart: cart, CartID: uint(cart_id), Price: price, Quantity: uint(quantity)}
+		if err := helpers.DB.Create(&cartItem).Error; err != nil {
+			return cartItem, errors.New(err.Error())
+		}
+	} else {
+		input := model.CartItem{Product: existedCartItem.Product, Price: price, Quantity: existedCartItem.Quantity + 1}
+		cartItem = existedCartItem
+		if err := helpers.DB.Model(&cartItem).Updates(input).Error; err != nil {
+			return cartItem, errors.New(err.Error())
+		}
 	}
 
 	return cartItem, nil

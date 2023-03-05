@@ -27,23 +27,31 @@ func UpdateProduct(context *gin.Context) (model.Product, error) {
 	deleteMedias := context.PostFormArray("delete_medias")
 
 	if len(deleteImages) > 0 {
-		for _, image := range deleteImages {
-			imageId, _ := strconv.ParseUint(image, 10, 8)
-			_, error := service.DeleteAttachment(context, uint(imageId))
-			if error != nil {
-				return product, errors.New(error.Error())
-			}
+		_, error := service.DeleteAttachmentsArr(context, deleteImages)
+		if error != nil {
+			return product, errors.New(error.Error())
 		}
+		// for _, image := range deleteImages {
+		// 	imageId, _ := strconv.ParseUint(image, 10, 8)
+		// 	_, error := service.DeleteAttachment(context, uint(imageId))
+		// 	if error != nil {
+		// 		return product, errors.New(error.Error())
+		// 	}
+		// }
 	}
 
 	if len(deleteMedias) > 0 {
-		for _, image := range deleteMedias {
-			imageId, _ := strconv.ParseUint(image, 10, 8)
-			_, error := service.DeleteAttachment(context, uint(imageId))
-			if error != nil {
-				return product, errors.New(error.Error())
-			}
+		_, error := service.DeleteAttachmentsArr(context, deleteMedias)
+		if error != nil {
+			return product, errors.New(error.Error())
 		}
+		// for _, image := range deleteMedias {
+		// 	imageId, _ := strconv.ParseUint(image, 10, 8)
+		// 	_, error := service.DeleteAttachment(context, uint(imageId))
+		// if error != nil {
+		// 	return product, errors.New(error.Error())
+		// }
+		// }
 	}
 
 	input := model.Product{

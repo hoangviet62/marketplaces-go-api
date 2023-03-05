@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	. "github.com/hoangviet62/marketplaces-go-api/helpers"
@@ -19,5 +20,16 @@ func DeleteAttachment(context *gin.Context, id uint) (bool, error) {
 		return false, errors.New(err.Error())
 	}
 
+	return true, nil
+}
+
+func DeleteAttachmentsArr(context *gin.Context, attachments []string) (bool, error) {
+	for _, attachment := range attachments {
+		attachmentId, _ := strconv.ParseUint(attachment, 10, 8)
+		_, error := DeleteAttachment(context, uint(attachmentId))
+		if error != nil {
+			return false, errors.New(error.Error())
+		}
+	}
 	return true, nil
 }
