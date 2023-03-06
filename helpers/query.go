@@ -1,10 +1,10 @@
 package helpers
 
 import (
-	// "fmt"
 	"net/url"
 
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm/clause"
 )
 
@@ -24,6 +24,7 @@ func QueryBuilder(queries url.Values, productCondition ...ProductConditionObject
 			result[k] = v
 		}
 	}
+	log.Info("Result: ", result)
 	return result
 }
 
