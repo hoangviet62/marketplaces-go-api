@@ -15,7 +15,7 @@ func DeleteProduct(context *gin.Context) (bool, error) {
 		return false, errors.New(err.Error())
 	}
 
-	if err := helpers.DB.Delete(&product).Error; err != nil {
+	if err := helpers.DB.Select("Images", "Medias").Delete(&product).Error; err != nil {
 		return false, errors.New(err.Error())
 	}
 
