@@ -2,12 +2,15 @@ package internal
 
 import (
 	// "fmt"
+	"fmt"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
+	userService "github.com/hoangviet62/marketplaces-go-api/internal/services/users"
 	"github.com/spf13/viper"
 	"gorm.io/gorm/clause"
-	"strconv"
 )
 
 func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData) {
@@ -33,11 +36,27 @@ func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData)
 		perPage, _ = strconv.Atoi(perPageStr)
 	}
 
+	productCondition := helpers.ProductConditionObject{}
+
+	user, err := userService.GetCurrentUser(context)
+
+	if err != nil {
+		productCondition = helpers.ProductConditionObject{IsProduct: true, IsAdmin: false}
+	} else {
+		userRole, _ := user.Role.Value()
+		adminRole, _ := model.Admin.Value()
+		productCondition = helpers.ProductConditionObject{IsProduct: true, IsAdmin: userRole == adminRole}
+	}
+
+	fmt.Println("IsProduct: ", productCondition.IsProduct)
+	fmt.Println("IsAdmin: ", productCondition.IsAdmin)
+
 	products := []model.Product{}
+
 	var totalItems int64
 	searchValue, _ := context.GetQuery("search")
 	clauses := helpers.SearchBuilder("name", searchValue)
-	queriesMap := helpers.QueryBuilder(queries)
+	queriesMap := helpers.QueryBuilder(queries, productCondition)
 	helpers.DB.Model(&model.Product{}).Count(&totalItems)
 	pagination := helpers.GetPaginationData(page, perPage, totalItems, sort, model.Product{})
 	helpers.DB.Preload(clause.Associations).Clauses(clauses...).Where(queriesMap).Order("created_at " + sort).Limit(perPage).Offset(pagination.Offset).Find(&products)

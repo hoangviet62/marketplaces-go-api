@@ -25,6 +25,9 @@ func UpdateProduct(context *gin.Context) (model.Product, error) {
 	tag := context.PostForm("tag")
 	categoryId, _ := strconv.ParseUint(context.PostForm("category_id"), 10, 8)
 
+	isFeatured, _ := strconv.ParseBool(context.PostForm("is_featured"))
+	status := model.ProductStatus(context.PostForm("status"))
+
 	deleteImages := context.PostForm("delete_images")
 	deleteMedias := context.PostForm("delete_medias")
 
@@ -51,6 +54,8 @@ func UpdateProduct(context *gin.Context) (model.Product, error) {
 	input := model.Product{
 		Name:        name,
 		Description: description,
+		IsFeatured:  isFeatured,
+		Status:      status,
 		CategoryID:  uint(categoryId),
 		Tag:         tag,
 	}
