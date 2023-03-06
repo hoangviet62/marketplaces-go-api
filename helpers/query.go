@@ -14,10 +14,12 @@ type ProductConditionObject struct {
 
 func QueryBuilder(queries url.Values, productCondition ...ProductConditionObject) map[string]interface{} {
 	result := make(map[string]interface{})
-	if !productCondition[0].IsAdmin && productCondition[0].IsProduct {
+
+	if productCondition != nil && !productCondition[0].IsAdmin && productCondition[0].IsProduct {
 		ApprovedStatus, _ := model.Approved.Value()
 		result["status"] = ApprovedStatus
 	}
+
 	for k, v := range queries {
 		if k != "sort" && k != "page" && k != "search" && k != "per_page" {
 			result[k] = v
