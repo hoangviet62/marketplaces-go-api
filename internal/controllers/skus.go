@@ -2,6 +2,7 @@ package internal
 
 import (
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
@@ -59,7 +60,7 @@ func CreateSku(context *gin.Context) {
 	}
 
 	var updatedSku model.Sku
-	if images != nil {
+	if len(images) > 0 {
 		updatedSku, err = service.UploadSkuAttachment(sku.ID, images, "images")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -67,7 +68,7 @@ func CreateSku(context *gin.Context) {
 		}
 	}
 
-	if medias != nil {
+	if len(medias) > 0 {
 		updatedSku, err = service.UploadSkuAttachment(sku.ID, medias, "medias")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -75,7 +76,13 @@ func CreateSku(context *gin.Context) {
 		}
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"data": updatedSku})
+	result := sku
+
+	if !reflect.DeepEqual(updatedSku, model.Sku{}) {
+		result = updatedSku
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"data": result})
 }
 
 func GetSkuById(context *gin.Context) {

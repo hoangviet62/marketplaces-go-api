@@ -2,6 +2,7 @@ package internal
 
 import (
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
@@ -59,7 +60,7 @@ func CreateCategory(context *gin.Context) {
 	}
 
 	var updatedCategory model.Category
-	if images != nil {
+	if len(images) > 0 {
 		updatedCategory, err = service.UploadCategoryAttachment(category.ID, images, "images")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -67,7 +68,7 @@ func CreateCategory(context *gin.Context) {
 		}
 	}
 
-	if medias != nil {
+	if len(medias) > 0 {
 		updatedCategory, err = service.UploadCategoryAttachment(category.ID, medias, "medias")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -75,7 +76,13 @@ func CreateCategory(context *gin.Context) {
 		}
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"data": updatedCategory})
+	result := category
+
+	if !reflect.DeepEqual(updatedCategory, model.Category{}) {
+		result = updatedCategory
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"data": result})
 }
 
 func GetCategoryById(context *gin.Context) {
@@ -132,7 +139,7 @@ func UpdateCategory(context *gin.Context) {
 	}
 
 	var updatedCategory model.Category
-	if images != nil {
+	if len(images) > 0 {
 		updatedCategory, err = service.UploadCategoryAttachment(category.ID, images, "images")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -140,7 +147,7 @@ func UpdateCategory(context *gin.Context) {
 		}
 	}
 
-	if medias != nil {
+	if len(medias) > 0 {
 		updatedCategory, err = service.UploadCategoryAttachment(category.ID, medias, "medias")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -148,7 +155,13 @@ func UpdateCategory(context *gin.Context) {
 		}
 	}
 
-	context.JSON(http.StatusOK, gin.H{"data": updatedCategory})
+	result := category
+
+	if !reflect.DeepEqual(updatedCategory, model.Product{}) {
+		result = updatedCategory
+	}
+
+	context.JSON(http.StatusOK, gin.H{"data": result})
 }
 
 func DeleteCategory(context *gin.Context) {
