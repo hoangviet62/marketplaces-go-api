@@ -2,6 +2,7 @@ package internal
 
 import (
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
@@ -59,7 +60,7 @@ func CreateBanner(context *gin.Context) {
 	}
 
 	var updatedBanner model.Banner
-	if images != nil {
+	if len(images) > 0 {
 		updatedBanner, err = service.UploadBannerAttachment(banner.ID, images, "images")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -67,7 +68,7 @@ func CreateBanner(context *gin.Context) {
 		}
 	}
 
-	if medias != nil {
+	if len(medias) > 0 {
 		updatedBanner, err = service.UploadBannerAttachment(banner.ID, medias, "medias")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -75,7 +76,13 @@ func CreateBanner(context *gin.Context) {
 		}
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"data": updatedBanner})
+	result := banner
+
+	if !reflect.DeepEqual(updatedBanner, model.Banner{}) {
+		result = updatedBanner
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"data": result})
 }
 
 func GetBannerById(context *gin.Context) {
@@ -132,7 +139,7 @@ func UpdateBanner(context *gin.Context) {
 	}
 
 	var updatedBanner model.Banner
-	if images != nil {
+	if len(images) > 0 {
 		updatedBanner, err = service.UploadBannerAttachment(banner.ID, images, "images")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -140,7 +147,7 @@ func UpdateBanner(context *gin.Context) {
 		}
 	}
 
-	if medias != nil {
+	if len(medias) > 0 {
 		updatedBanner, err = service.UploadBannerAttachment(banner.ID, medias, "medias")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -148,7 +155,13 @@ func UpdateBanner(context *gin.Context) {
 		}
 	}
 
-	context.JSON(http.StatusOK, gin.H{"data": updatedBanner})
+	result := banner
+
+	if !reflect.DeepEqual(updatedBanner, model.Banner{}) {
+		result = updatedBanner
+	}
+
+	context.JSON(http.StatusOK, gin.H{"data": result})
 }
 
 func DeleteBanner(context *gin.Context) {
