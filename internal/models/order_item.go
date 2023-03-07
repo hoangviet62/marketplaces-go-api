@@ -7,5 +7,5 @@ type OrderItem struct {
 	OrderID  uint    `json:"order_id"`
 	Order    Order   `json:"order"`
 	Product  Product `json:"product"`
-	Sku      Sku     `json:"sku"`
+	SkuID    *uint   `json:"sku,omitempty"`
 }

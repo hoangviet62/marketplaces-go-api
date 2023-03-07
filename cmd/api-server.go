@@ -28,6 +28,7 @@ func StartApiServer() {
 	routes.BannerRoutes(router)
 	routes.CartItemRoutes(router)
 	routes.CartRoutes(router)
+	routes.SpecRoutes(router)
 	routes.MenuRoutes(router)
 
 	// Kong migration for all routes

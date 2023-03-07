@@ -10,11 +10,14 @@ require (
 	github.com/spf13/viper v1.15.0
 	golang.org/x/crypto v0.5.0
 	golang.org/x/exp v0.0.0-20230206171751-46f607a40771
-	gorm.io/driver/mysql v1.4.5
-	gorm.io/gorm v1.24.3
+	gorm.io/driver/mysql v1.4.7
+	gorm.io/gorm v1.24.6
 )
 
-require github.com/mattn/go-colorable v0.1.12 // indirect
+require (
+	github.com/mattn/go-colorable v0.1.12 // indirect
+	gorm.io/datatypes v1.1.0 // indirect
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect

@@ -7,8 +7,6 @@ type Sku struct {
 	Price       float64      `json:"price"`
 	Status      uint         `json:"status"`
 	ProductID   uint         `json:"product_id"`
-	CartItemID  *uint        `json:"cart_item_id,omitempty"`
-	OrderItemID *uint        `json:"order_item_id,omitempty"`
 	Spec        Spec         `json:"spec,omitempty"`
 	Images      []Attachment `json:"images,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:sku_images"`
 	Medias      []Attachment `json:"medias,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:sku_medias"`
