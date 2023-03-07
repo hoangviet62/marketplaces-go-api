@@ -1,13 +1,19 @@
 package internal
 
 import (
-	"errors"
+
 	// "fmt"
+
+	"errors"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/datatypes"
+
 	helpers "github.com/hoangviet62/marketplaces-go-api/helpers"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
+	skuService "github.com/hoangviet62/marketplaces-go-api/internal/services/skus"
+	specService "github.com/hoangviet62/marketplaces-go-api/internal/services/specs"
 )
 
 func CreateProduct(context *gin.Context) (model.Product, error) {
@@ -22,17 +28,34 @@ func CreateProduct(context *gin.Context) (model.Product, error) {
 	categoryId, _ := strconv.ParseUint(context.PostForm("category_id"), 10, 8)
 	product := model.Product{Name: name, Tag: tag, Description: description, CategoryID: uint(categoryId), IsFeatured: isFeatured, Status: status}
 
+	skuParams, isSkuParamsVisible := context.GetPostFormMap("sku")
+	var sku model.Sku
 	if err := helpers.DB.Create(&product).Error; err != nil {
 		return product, errors.New(err.Error())
 	}
 
-	price, _ := strconv.ParseFloat(context.PostForm("price"), 64)
-	quantity, _ := strconv.ParseUint(context.PostForm("quantity"), 10, 8)
+	if isSkuParamsVisible {
+		price, _ := strconv.ParseFloat(skuParams["price"], 64)
+		quantity, _ := strconv.ParseUint(skuParams["quantity"], 10, 8)
+		sku = model.Sku{Description: skuParams["description"], Quantity: uint(quantity), Price: price, ProductID: product.ID}
+		skuResult, error := skuService.CreateSku(context, sku)
 
-	sku := model.Sku{Description: description, Quantity: uint(quantity), Price: price, ProductID: product.ID}
+		if error != nil {
+			return product, errors.New(error.Error())
+		}
 
-	if err := helpers.DB.Create(&sku).Error; err != nil {
-		return product, errors.New(err.Error())
+		specParams, isSkuParamsVisible := context.GetPostFormMap("spec")
+		specDescription := datatypes.JSON([]byte(specParams["description"]))
+
+		if isSkuParamsVisible {
+			spec := model.Spec{Description: specDescription, SkuID: skuResult.ID, ProductID: product.ID}
+
+			_, specError := specService.CreateSpec(context, spec)
+
+			if specError != nil {
+				return product, errors.New(specError.Error())
+			}
+		}
 	}
 
 	return product, nil

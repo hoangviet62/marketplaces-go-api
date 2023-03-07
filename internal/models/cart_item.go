@@ -8,7 +8,7 @@ type CartItem struct {
 	Cart      Cart    `json:"cart"`
 	ProductID uint    `json:"product_id"`
 	Product   Product `json:"product"`
-	Sku       Sku     `json:"sku"`
+	SkuID     *uint   `json:"sku,omitempty"`
 }
 
 type CreateCartItemInput struct {
