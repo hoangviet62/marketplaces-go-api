@@ -25,7 +25,7 @@ func Customer() []CustomerParentMenu {
 	childCategories := []CustomerMenu{}
 	helpers.DB.Model(&model.Category{}).Limit(10).Offset(0).Find(&categories)
 	for _, category := range categories {
-		child := CustomerMenu{Id: int8(category.ID), Name: category.Name, Path: "?type=Category&Name=" + category.Name}
+		child := CustomerMenu{Id: int8(category.ID), Name: category.Name, Path: "/catalog?type=Category&Name=" + category.Name}
 		childCategories = append(childCategories, child)
 	}
 	result := CustomerParentMenu{Id: 1, Name: "Categories", SubItems: childCategories}
@@ -35,7 +35,7 @@ func Customer() []CustomerParentMenu {
 	childProducts := []CustomerMenu{}
 	helpers.DB.Model(&model.Product{}).Limit(10).Offset(0).Find(&products)
 	for _, product := range products {
-		child := CustomerMenu{Id: int8(product.ID), Name: product.Name, Path: "?type=Product&Name=" + product.Name}
+		child := CustomerMenu{Id: int8(product.ID), Name: product.Name, Path: "/catalog?type=Product&Name=" + product.Name}
 		childProducts = append(childProducts, child)
 	}
 	result = CustomerParentMenu{Id: 2, Name: "Products", SubItems: childProducts}
@@ -45,7 +45,7 @@ func Customer() []CustomerParentMenu {
 	childSuppliers := []CustomerMenu{}
 	helpers.DB.Model(&model.Supplier{}).Limit(10).Offset(0).Find(&suppliers)
 	for _, supplier := range suppliers {
-		child := CustomerMenu{Id: int8(supplier.ID), Name: supplier.Name, Path: "?type=Supplier&Name=" + supplier.Name}
+		child := CustomerMenu{Id: int8(supplier.ID), Name: supplier.Name, Path: "/catalog?type=Supplier&Name=" + supplier.Name}
 		childSuppliers = append(childSuppliers, child)
 	}
 	result = CustomerParentMenu{Id: 3, Name: "Suppliers", SubItems: childSuppliers}
