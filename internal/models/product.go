@@ -25,7 +25,7 @@ type Product struct {
 	Description string        `json:"description"`
 	Tag         string        `json:"tag"`
 	CategoryID  uint          `json:"category_id"`
-	Spec        Spec          `json:"spec,omitempty"`
+	Spec        *Spec         `json:"spec,omitempty"`
 	Skus        []Sku         `json:"skus,omitempty"`
 	CartItemID  *uint         `json:"cart_item,omitempty"`
 	OrderItemID *uint         `json:"order_item,omitempty"`
