@@ -15,7 +15,7 @@ func DeleteCategory(context *gin.Context) (bool, error) {
 		return false, errors.New(err.Error())
 	}
 
-	if err := DB.Select("Images", "Medias", "Attachments").Unscoped().Delete(&category).Error; err != nil {
+	if err := DB.Select("Images", "Medias", "Attachments", "Products").Delete(&category).Error; err != nil {
 		return false, errors.New(err.Error())
 	}
 
