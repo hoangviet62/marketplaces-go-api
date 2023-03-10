@@ -31,7 +31,7 @@ func DeleteCartTransaction(context *gin.Context, tx *gorm.DB, CartID uint) (bool
 		return false, errors.New(err.Error())
 	}
 
-	if err := tx.Select("CartItem").Delete(&cart).Error; err != nil {
+	if err := tx.Unscoped().Delete(&cart).Error; err != nil {
 		tx.Rollback()
 		return false, errors.New(err.Error())
 	}
