@@ -10,9 +10,8 @@ import (
 )
 
 func CreateSku(context *gin.Context, skuParams ...model.Sku) (model.Sku, error) {
-	// Validate input
-	// var input model.CreateProductInput
 	sku := model.Sku{}
+
 	if skuParams != nil {
 		sku = skuParams[0]
 	} else {
