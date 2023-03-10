@@ -21,8 +21,7 @@ func CreateSpec(context *gin.Context, specParams ...model.Spec) (model.Spec, err
 		specDescription := datatypes.JSON([]byte(description))
 
 		productId, _ := strconv.ParseUint(context.PostForm("product_id"), 10, 8)
-		skuId, _ := strconv.ParseUint(context.PostForm("sku_id"), 10, 8)
-		spec = model.Spec{Description: specDescription, ProductID: uint(productId), SkuID: uint(skuId)}
+		spec = model.Spec{Description: specDescription, ProductID: uint(productId)}
 	}
 
 	if err := DB.Create(&spec).Error; err != nil {

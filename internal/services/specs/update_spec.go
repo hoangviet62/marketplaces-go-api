@@ -19,12 +19,10 @@ func UpdateSpec(context *gin.Context) (model.Spec, error) {
 	// Validate input
 	description, _ := context.GetPostForm("description")
 	specDescription := datatypes.JSON([]byte(description))
-	skuId, _ := strconv.ParseUint(context.PostForm("sku_id"), 10, 32)
 	productId, _ := strconv.ParseUint(context.PostForm("product_id"), 10, 32)
 
 	input := model.Spec{
 		Description: specDescription,
-		SkuID:       uint(skuId),
 		ProductID:   uint(productId),
 	}
 

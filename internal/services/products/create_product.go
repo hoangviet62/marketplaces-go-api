@@ -29,7 +29,7 @@ func CreateProduct(context *gin.Context) (model.Product, error) {
 	product := model.Product{Name: name, Tag: tag, Description: description, CategoryID: uint(categoryId), IsFeatured: isFeatured, Status: status}
 
 	skuParams, isSkuParamsVisible := context.GetPostFormMap("sku")
-	var sku model.Sku
+
 	if err := helpers.DB.Create(&product).Error; err != nil {
 		return product, errors.New(err.Error())
 	}
@@ -37,24 +37,24 @@ func CreateProduct(context *gin.Context) (model.Product, error) {
 	if isSkuParamsVisible {
 		price, _ := strconv.ParseFloat(skuParams["price"], 64)
 		quantity, _ := strconv.ParseUint(skuParams["quantity"], 10, 8)
-		sku = model.Sku{Description: skuParams["description"], Quantity: uint(quantity), Price: price, ProductID: product.ID}
-		skuResult, error := skuService.CreateSku(context, sku)
+		sku := model.Sku{Description: skuParams["description"], Quantity: uint(quantity), Price: price, ProductID: product.ID}
+		_, error := skuService.CreateSku(context, sku)
 
 		if error != nil {
 			return product, errors.New(error.Error())
 		}
+	}
 
-		specParams, isSkuParamsVisible := context.GetPostFormMap("spec")
+	specParams, isSpecParamsVisible := context.GetPostFormMap("spec")
+	if isSpecParamsVisible {
 		specDescription := datatypes.JSON([]byte(specParams["description"]))
 
-		if isSkuParamsVisible {
-			spec := model.Spec{Description: specDescription, SkuID: skuResult.ID, ProductID: product.ID}
+		spec := model.Spec{Description: specDescription, ProductID: product.ID}
 
-			_, specError := specService.CreateSpec(context, spec)
+		_, specError := specService.CreateSpec(context, spec)
 
-			if specError != nil {
-				return product, errors.New(specError.Error())
-			}
+		if specError != nil {
+			return product, errors.New(specError.Error())
 		}
 	}
 

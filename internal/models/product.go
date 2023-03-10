@@ -35,9 +35,3 @@ type Product struct {
 	Medias      []Attachment  `json:"medias,omitempty" gorm:"polymorphic:Attachment;polymorphicValue:product_medias"`
 	Attachments []Attachment  `json:"attachments,omitempty" gorm:"polymorphic:Attachment;"`
 }
-
-// Product => 1 Sku (For now)
-// QUERY Product if not admin => only get products status = approved
-// Product Status => Default: Pending, 3 ENUMS Pending, Approved, Rejected
-// Specs
-// path menu: /catalog?type=category||product&id&name

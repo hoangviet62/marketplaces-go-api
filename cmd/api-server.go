@@ -30,6 +30,7 @@ func StartApiServer() {
 	routes.CartRoutes(router)
 	routes.SpecRoutes(router)
 	routes.MenuRoutes(router)
+	routes.OrderRoutes(router)
 
 	// Kong migration for all routes
 	shouldMigrate, _ := strconv.ParseBool(viper.GetString("KONG.SHOULD_MIGRATE"))
