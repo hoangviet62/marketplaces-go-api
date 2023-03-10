@@ -5,6 +5,7 @@ type CartItem struct {
 	Quantity  uint    `json:"quantity"`
 	Price     float64 `json:"price"`
 	CartID    uint    `json:"cart_id"`
+	Cart      Cart    `gorm:"constraint:OnDelete:SET NULL;" json:"cart"`
 	ProductID uint    `json:"product_id"`
 	Product   Product `json:"product"`
 	SkuID     *uint   `json:"sku_id,omitempty"`
