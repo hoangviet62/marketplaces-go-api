@@ -12,13 +12,13 @@ import (
 
 func GetUserCart(context *gin.Context) (model.Cart, error) {
 	user, err := service.GetCurrentUser(context)
-	var cart model.Cart
+	cart := model.Cart{}
 
 	if err != nil {
 		return cart, errors.New(err.Error())
 	}
 
-	if err := helpers.DB.Preload(clause.Associations).Preload("CartItem.Product.Images").Preload("CartItem.Product.Medias").Where("user_id = ?", user.ID).First(&cart).Error; err != nil {
+	if err := helpers.DB.Preload(clause.Associations).Where("user_id = ?", user.ID).First(&cart).Error; err != nil {
 		return cart, errors.New("record not found")
 	}
 
