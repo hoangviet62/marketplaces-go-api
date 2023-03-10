@@ -31,7 +31,7 @@ func CreateCartItem(context *gin.Context) (model.CartItem, error) {
 
 	if existedCartItemErr != nil {
 		helpers.DB.Preload(clause.Associations).First(&product, "id = ?", context.PostForm("product_id"))
-		cartItem = model.CartItem{Product: product, ProductID: uint(productId), Cart: cart, CartID: uint(cart_id), Price: price, Quantity: uint(quantity)}
+		cartItem = model.CartItem{Product: product, ProductID: uint(productId), CartID: uint(cart_id), Price: price, Quantity: uint(quantity)}
 		if err := helpers.DB.Create(&cartItem).Error; err != nil {
 			return cartItem, errors.New(err.Error())
 		}
