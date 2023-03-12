@@ -9,18 +9,20 @@ import (
 func StartMigration() {
 	log.Info("==== STARTING MIGRATIONS ====")
 	helpers.DB.AutoMigrate(
-		&model.Attachment{},
-		&model.Banner{},
-		&model.CartItem{},
-		&model.Cart{},
-		&model.Category{},
-		&model.Country{},
-		&model.OrderItem{},
-		&model.Order{},
-		&model.Product{},
-		&model.Sku{},
-		&model.Spec{},
-		&model.User{},
+		// &model.Attachment{},
+		// &model.Banner{},
+		// &model.CartItem{},
+		// &model.Cart{},
+		// &model.Category{},
+		// &model.Country{},
+		// &model.OrderItem{},
+		// &model.Order{},
+		// &model.Product{},
+		// &model.Sku{},
+		// &model.Spec{},
+		// &model.User{},
+		&model.SpecHard{},
+		&model.SkuHard{},
 	)
 	log.Info("==== END MIGRATIONS ====")
 }
