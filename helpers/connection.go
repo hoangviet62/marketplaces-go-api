@@ -17,7 +17,7 @@ func InitMySqlConnection() {
 	port := viper.GetString("MYSQL.PORT")
 	dsn := user + ":" + password + "@tcp(" + host + ":" + port + ")/" + database + "?charset=utf8mb4&parseTime=True&loc=Local"
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{DisableForeignKeyConstraintWhenMigrating: true})
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Errorf(dsn)
 		log.Error("MYSQL: ", err)

@@ -11,6 +11,6 @@ type SpecHard struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
-	SkuHardId uint
-	SkuHard   SkuHard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	SkuHardId uint           `gorm:"foreignKey:ID;references:ID;"`
+	// SkuHard   SkuHard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }

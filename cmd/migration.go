@@ -21,8 +21,8 @@ func StartMigration() {
 		// &model.Sku{},
 		// &model.Spec{},
 		// &model.User{},
-		&model.SpecHard{},
 		&model.SkuHard{},
+		&model.SpecHard{},
 	)
 	log.Info("==== END MIGRATIONS ====")
 }
