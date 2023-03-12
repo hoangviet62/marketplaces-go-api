@@ -1,8 +1,6 @@
 package internal
 
 import (
-	// "fmt"
-	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -36,20 +34,17 @@ func GetProducts(context *gin.Context) ([]model.Product, helpers.PaginationData)
 		perPage, _ = strconv.Atoi(perPageStr)
 	}
 
-	productCondition := helpers.ProductConditionObject{}
+	var productCondition helpers.ProductConditionObject
+	token := context.GetHeader("Authorization")
 
-	user, err := userService.GetCurrentUser(context)
-
-	if err != nil {
+	if token == "" {
 		productCondition = helpers.ProductConditionObject{IsProduct: true, IsAdmin: false}
 	} else {
+		user, _ := userService.GetCurrentUser(context)
 		userRole, _ := user.Role.Value()
 		adminRole, _ := model.Admin.Value()
 		productCondition = helpers.ProductConditionObject{IsProduct: true, IsAdmin: userRole == adminRole}
 	}
-
-	fmt.Println("IsProduct: ", productCondition.IsProduct)
-	fmt.Println("IsAdmin: ", productCondition.IsAdmin)
 
 	products := []model.Product{}
 

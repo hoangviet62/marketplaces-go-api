@@ -12,7 +12,7 @@ import (
 
 func GetUserCart(context *gin.Context) (model.Cart, error) {
 	user, err := service.GetCurrentUser(context)
-	var cart model.Cart
+	cart := model.Cart{}
 
 	if err != nil {
 		return cart, errors.New(err.Error())

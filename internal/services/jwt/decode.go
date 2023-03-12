@@ -3,6 +3,7 @@ package jwt
 import (
 	"errors"
 	"fmt"
+
 	"gorm.io/gorm/clause"
 
 	"github.com/golang-jwt/jwt/v4"

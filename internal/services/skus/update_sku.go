@@ -10,7 +10,7 @@ import (
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 )
 
-func UpdateSku(context *gin.Context, attachments []model.Attachment) (model.Sku, error) {
+func UpdateSku(context *gin.Context) (model.Sku, error) {
 	var sku model.Sku
 	if err := DB.Where("id = ?", context.Param("id")).First(&sku).Error; err != nil {
 		return sku, errors.New("Record not found")
@@ -29,7 +29,6 @@ func UpdateSku(context *gin.Context, attachments []model.Attachment) (model.Sku,
 		Price:       price,
 		Status:      uint(status),
 		ProductID:   uint(productId),
-		Attachments: attachments,
 	}
 
 	if err := DB.Model(&sku).Updates(input).Error; err != nil {

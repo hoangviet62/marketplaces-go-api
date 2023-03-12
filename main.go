@@ -24,6 +24,5 @@ func main() {
 		log.Info("Hello")
 		log.Info(err)
 	}
-	// menu.Customer()
 	cmd.StartApiServer()
 }

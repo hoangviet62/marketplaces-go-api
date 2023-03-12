@@ -2,6 +2,7 @@ package internal
 
 import (
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
@@ -59,7 +60,8 @@ func CreateProduct(context *gin.Context) {
 	}
 
 	var updatedProduct model.Product
-	if images != nil {
+
+	if len(images) > 0 {
 		updatedProduct, err = service.UploadProductAttachment(product.ID, images, "images")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -67,7 +69,7 @@ func CreateProduct(context *gin.Context) {
 		}
 	}
 
-	if medias != nil {
+	if len(medias) > 0 {
 		updatedProduct, err = service.UploadProductAttachment(product.ID, medias, "medias")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -75,7 +77,13 @@ func CreateProduct(context *gin.Context) {
 		}
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"data": updatedProduct})
+	result := product
+
+	if !reflect.DeepEqual(updatedProduct, model.Product{}) {
+		result = updatedProduct
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"data": result})
 }
 
 func GetProductById(context *gin.Context) {
@@ -133,7 +141,7 @@ func UpdateProduct(context *gin.Context) {
 
 	var updatedProduct model.Product
 
-	if images != nil {
+	if len(images) > 0 {
 		updatedProduct, err = service.UploadProductAttachment(product.ID, images, "images")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -141,7 +149,7 @@ func UpdateProduct(context *gin.Context) {
 		}
 	}
 
-	if medias != nil {
+	if len(medias) > 0 {
 		updatedProduct, err = service.UploadProductAttachment(product.ID, medias, "medias")
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -149,7 +157,13 @@ func UpdateProduct(context *gin.Context) {
 		}
 	}
 
-	context.JSON(http.StatusOK, gin.H{"data": updatedProduct})
+	result := product
+
+	if !reflect.DeepEqual(updatedProduct, model.Product{}) {
+		result = updatedProduct
+	}
+
+	context.JSON(http.StatusOK, gin.H{"data": result})
 }
 
 func DeleteProduct(context *gin.Context) {

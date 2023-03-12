@@ -8,14 +8,14 @@ import (
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
 )
 
-func DeleteCategory(context *gin.Context) (bool, error) {
-	category := model.Category{}
+func DeleteSpec(context *gin.Context) (bool, error) {
+	var spec model.Spec
 
-	if err := DB.Preload("Products").Where("id = ?", context.Param("id")).First(&category).Error; err != nil {
+	if err := DB.Where("id = ?", context.Param("id")).First(&spec).Error; err != nil {
 		return false, errors.New(err.Error())
 	}
 
-	if err := DB.Select("Images", "Medias", "Attachments", "Products").Delete(&category).Error; err != nil {
+	if err := DB.Delete(&spec).Error; err != nil {
 		return false, errors.New(err.Error())
 	}
 

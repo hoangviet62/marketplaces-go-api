@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	// "fmt"
 	"net/url"
 
 	model "github.com/hoangviet62/marketplaces-go-api/internal/models"
@@ -15,12 +14,14 @@ type ProductConditionObject struct {
 
 func QueryBuilder(queries url.Values, productCondition ...ProductConditionObject) map[string]interface{} {
 	result := make(map[string]interface{})
+
+	if productCondition != nil && !productCondition[0].IsAdmin && productCondition[0].IsProduct {
+		ApprovedStatus, _ := model.Approved.Value()
+		result["status"] = ApprovedStatus
+	}
+
 	for k, v := range queries {
 		if k != "sort" && k != "page" && k != "search" && k != "per_page" {
-			if !productCondition[0].IsAdmin && productCondition[0].IsProduct {
-				PendingStatus, _ := model.Pending.Value()
-				result["status"] = PendingStatus
-			}
 			result[k] = v
 		}
 	}
