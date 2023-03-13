@@ -13,7 +13,7 @@ import (
 
 func main() {
 	helpers.InitMySqlConnection()
-	cmd.StartMigration()
+	// cmd.StartMigration()
 	// Hard
 	skuHard := model.SkuHard{ID: 1, CreatedAt: time.Now()}
 	DB.Create(&skuHard)
